@@ -299,6 +299,31 @@ a-scene,
   color: var(--text-main);
 }
 
+.hud-modal__qr-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 18px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+}
+
+.hud-modal__qr-img {
+  display: block;
+  border-radius: 6px;
+  background: #ffffff;
+  padding: 6px;
+}
+
+.hud-modal__qr-caption {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
 .hud-modal__close-btn {
   display: block;
   width: 100%;
