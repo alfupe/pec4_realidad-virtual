@@ -47,11 +47,13 @@ El proyecto sigue una arquitectura desacoplada basada en Clean Code, sin depende
 
 ```text
 PEC4_Fuentes_Alejandro/
-├── index.html               # Escena WebAR, interfaz DOM Overlay y controladores JS
+├── index.html               # Escena WebAR e interfaz de usuario HUD
 ├── README.md                # Memoria técnica, guía de despliegue y licencias
 └── assets/
     ├── css/
     │   └── styles.css       # Hoja de estilos desacoplada con metodología BEM
+    ├── js/
+    │   └── app.js          # Controladores modulares de audio, visibilidad e interfaz
     ├── models/
     │   └── cyber_visor.glb  # Modelo 3D optimizado (Low-Poly + PBR + Animación glTF)
     ├── audio/

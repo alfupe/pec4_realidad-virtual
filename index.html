@@ -11,6 +11,7 @@
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+  <script src="assets/js/app.js" defer></script>
 </head>
 <body>
 
@@ -94,105 +95,5 @@
       </a-entity>
     </a-entity>
   </a-scene>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Banco de pistas de audio
-      const audioTracks = [
-        { name: 'Escáner Táctico', el: document.getElementById('audioScan') },
-        { name: 'Activación HUD', el: document.getElementById('audioActivate') },
-        { name: 'Fijación de Objetivo', el: document.getElementById('audioTarget') }
-      ];
-
-      const btnPlaySound = document.getElementById('btnPlaySound');
-      const audioTrackName = document.getElementById('audioTrackName');
-      let currentPlayingAudio = null;
-      let lastAudioIndex = -1;
-
-      // Reproducción aleatoria cortando la pista anterior si está activa
-      function playRandomSound() {
-        if (currentPlayingAudio) {
-          currentPlayingAudio.pause();
-          currentPlayingAudio.currentTime = 0;
-          currentPlayingAudio = null;
-        }
-
-        // Evitar repetir la misma pista dos veces consecutivas
-        let randomIndex;
-        do {
-          randomIndex = Math.floor(Math.random() * audioTracks.length);
-        } while (randomIndex === lastAudioIndex && audioTracks.length > 1);
-
-        lastAudioIndex = randomIndex;
-        const track = audioTracks[randomIndex];
-        currentPlayingAudio = track.el;
-
-        btnPlaySound.classList.add('hud__btn--playing');
-        audioTrackName.textContent = track.name;
-
-        currentPlayingAudio.play().catch((err) => {
-          console.warn('Reproducción de audio bloqueada:', err);
-          resetAudioState();
-        });
-
-        currentPlayingAudio.onended = () => {
-          resetAudioState();
-          currentPlayingAudio = null;
-        };
-      }
-
-      function resetAudioState() {
-        btnPlaySound.classList.remove('hud__btn--playing');
-        audioTrackName.textContent = 'En espera';
-      }
-
-      btnPlaySound.addEventListener('click', playRandomSound);
-
-      // Conmutar visibilidad del visor 3D
-      const btnToggleVisor = document.getElementById('btnToggleVisor');
-      const visorContainer = document.getElementById('visorContainer');
-      const visorBtnIcon = document.getElementById('visorBtnIcon');
-      const visorBtnLabel = document.getElementById('visorBtnLabel');
-      let isVisorVisible = true;
-
-      btnToggleVisor.addEventListener('click', () => {
-        isVisorVisible = !isVisorVisible;
-        visorContainer.setAttribute('visible', isVisorVisible);
-        btnToggleVisor.setAttribute('aria-pressed', (!isVisorVisible).toString());
-
-        if (isVisorVisible) {
-          visorBtnIcon.textContent = '👁️';
-          visorBtnLabel.textContent = 'Ocultar Visor';
-          btnToggleVisor.classList.remove('hud__btn--hidden');
-        } else {
-          visorBtnIcon.textContent = '🕶️';
-          visorBtnLabel.textContent = 'Mostrar Visor';
-          btnToggleVisor.classList.add('hud__btn--hidden');
-        }
-      });
-
-      // Interacción directa por clic en el modelo 3D
-      const interactiveModel = document.querySelector('.interactivo');
-      if (interactiveModel) {
-        interactiveModel.addEventListener('click', (e) => {
-          if (e && e.stopPropagation) e.stopPropagation();
-          playRandomSound();
-        });
-      }
-
-      // Control del diálogo informativo
-      const btnInfoModal = document.getElementById('btnInfoModal');
-      const btnCloseModal = document.getElementById('btnCloseModal');
-      const infoModal = document.getElementById('infoModal');
-
-      btnInfoModal.addEventListener('click', () => {
-        infoModal.classList.add('hud-modal--active');
-      });
-
-      btnCloseModal.addEventListener('click', () => {
-        infoModal.classList.remove('hud-modal--active');
-      });
-    });
-  </script>
 </body>
 </html>
