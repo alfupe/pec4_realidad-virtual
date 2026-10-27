@@ -121,12 +121,31 @@ function initModalController() {
 // Controlador del ciclo de vida y eventos del sistema AR
 function initSceneLifecycleController() {
   const sceneEl = document.querySelector('a-scene');
+  const visorModel = document.getElementById('visorModel');
   const audioTrackName = document.getElementById('audioTrackName');
+
+  if (visorModel) {
+    visorModel.addEventListener('model-loaded', () => {
+      console.log('WebAR: Modelo 3D del visor cargado y listo en la escena');
+    });
+
+    visorModel.addEventListener('model-error', (err) => {
+      console.error('WebAR: Error al cargar el modelo 3D del visor', err);
+    });
+  }
 
   if (!sceneEl) return;
 
   sceneEl.addEventListener('arReady', () => {
-    console.log('WebAR: Seguimiento facial calibrado y activo');
+    console.log('WebAR: Sistema de visión artificial y tracking facial listos');
+  });
+
+  sceneEl.addEventListener('targetFound', () => {
+    console.log('WebAR: Rostro detectado con éxito');
+  });
+
+  sceneEl.addEventListener('targetLost', () => {
+    console.log('WebAR: Rostro fuera de encuadre');
   });
 
   sceneEl.addEventListener('arError', (event) => {
