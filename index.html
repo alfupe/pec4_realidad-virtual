@@ -90,14 +90,14 @@
 
     <!-- Anclaje al entrecejo (índice 168) -->
     <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168">
-      <a-entity id="visorContainer" position="0 0.0 0.12" visible="true">
+      <a-entity id="visorContainer" position="0 0.03 0.13" visible="true">
         <a-gltf-model
           id="visorModel"
           class="interactivo"
           src="#cyberVisorModel"
           rotation="0 0 0"
           position="0 0 0"
-          scale="0.45 0.45 0.45"
+          scale="0.52 0.52 0.52"
           animation-mixer="clip: *; loop: repeat">
         </a-gltf-model>
       </a-entity>
@@ -208,9 +208,9 @@
       }
 
       // Calibración interactiva con teclado (+/- escala, flechas posición)
-      let currentScale = 0.45;
-      let posY = 0.0;
-      let posZ = 0.12;
+      let currentScale = 0.52;
+      let posY = 0.03;
+      let posZ = 0.13;
       const visorModelEl = document.getElementById('visorModel');
 
       window.addEventListener('keydown', (e) => {
