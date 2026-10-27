@@ -141,6 +141,13 @@ a-scene,
   box-shadow: 0 0 14px rgba(0, 240, 255, 0.4);
 }
 
+.hud__status--hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
 .hud__pulse-dot {
   width: 8px;
   height: 8px;
@@ -168,47 +175,6 @@ a-scene,
     transform: scale(0.9);
     box-shadow: 0 0 0 0 rgba(0, 240, 255, 0);
   }
-}
-
-/* Retícula central */
-.hud__reticle {
-  align-self: center;
-  width: 180px;
-  height: 180px;
-  border: 1px dashed rgba(0, 240, 255, 0.25);
-  border-radius: 50%;
-  position: relative;
-  opacity: 0.35;
-  pointer-events: none;
-  transition: all var(--transition-smooth);
-}
-
-.hud__reticle::before,
-.hud__reticle::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-}
-
-.hud__reticle::before {
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--color-primary);
-}
-
-.hud__reticle::after {
-  width: 6px;
-  height: 6px;
-  background: var(--color-secondary);
-}
-
-.hud__reticle--active {
-  opacity: 0.85;
-  border-color: rgba(0, 240, 255, 0.6);
-  transform: scale(1.05);
 }
 
 /* Barra inferior y controles */
@@ -382,5 +348,4 @@ a-scene,
   .hud__author { font-size: 0.65rem; }
   .hud__status { font-size: 0.68rem; padding: 4px 8px; }
   .hud__btn { font-size: 0.74rem; padding: 10px 8px; }
-  .hud__reticle { width: 140px; height: 140px; }
 }

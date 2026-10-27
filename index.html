@@ -33,8 +33,6 @@
       </div>
     </header>
 
-    <div id="centerReticle" class="hud__reticle" aria-hidden="true"></div>
-
     <footer class="hud__footer">
       <div id="audioTicker" class="hud__ticker">
         Audio: <span id="audioTrackName" class="hud__ticker-track">En espera</span>
@@ -184,18 +182,16 @@
       const faceTarget = document.getElementById('faceTarget');
       const trackingBadge = document.getElementById('trackingBadge');
       const trackingText = document.getElementById('trackingText');
-      const centerReticle = document.getElementById('centerReticle');
 
       faceTarget.addEventListener('targetFound', () => {
-        trackingBadge.classList.add('hud__status--detected');
-        trackingText.textContent = 'Rostro detectado';
-        centerReticle.classList.add('hud__reticle--active');
+        // Al encontrar el rostro, se oculta el indicador para dejar la pantalla despejada
+        trackingBadge.classList.add('hud__status--hidden');
       });
 
       faceTarget.addEventListener('targetLost', () => {
-        trackingBadge.classList.remove('hud__status--detected');
+        // Si se pierde el rostro, vuelve a mostrarse el aviso
+        trackingBadge.classList.remove('hud__status--hidden');
         trackingText.textContent = 'Buscando rostro...';
-        centerReticle.classList.remove('hud__reticle--active');
       });
 
       // Interacción directa por clic en el modelo 3D
