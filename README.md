@@ -18,6 +18,12 @@ La experiencia implementa un **Visor Táctico Cyberpunk** tridimensional y anima
 > 🔗 **Acceso a la experiencia WebAR:**  
 > [https://alfupe.github.io/pec4_realidad-virtual/](https://alfupe.github.io/pec4_realidad-virtual/)
 
+### Código QR de acceso
+
+<p align="center">
+  <img src="assets/qr-github-pages.png" alt="Código QR GitHub Pages" width="200">
+</p>
+
 *(Nota: Al acceder por primera vez, el navegador solicitará permiso para utilizar la cámara web. Es imprescindible aceptar para iniciar la detección facial).*
 
 ---
@@ -48,10 +54,11 @@ PEC4_Fuentes_Alejandro/
     │   └── styles.css       # Hoja de estilos desacoplada con metodología BEM
     ├── models/
     │   └── cyber_visor.glb  # Modelo 3D optimizado (Low-Poly + PBR + Animación glTF)
-    └── audio/
-        ├── scifi_scan.wav   # Pista 1: Escáner Táctico (Sweep Radar)
-        ├── scifi_activate.wav # Pista 2: Activación HUD (Power Up)
-        └── scifi_target.wav # Pista 3: Fijación de Objetivo (Target Lock)
+    ├── audio/
+    │   ├── scifi_scan.wav   # Pista 1: Escáner Táctico (Sweep Radar)
+    │   ├── scifi_activate.wav # Pista 2: Activación HUD (Power Up)
+    │   └── scifi_target.wav # Pista 3: Fijación de Objetivo (Target Lock)
+    └── qr-github-pages.png  # Código QR de acceso directo para dispositivos móviles
 ```
 
 ### Tecnologías y Librerías Utilizadas (vía CDN Oficial)

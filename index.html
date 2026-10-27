@@ -90,7 +90,7 @@
 
     <!-- Anclaje al entrecejo (índice 168) -->
     <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168">
-      <a-entity id="visorContainer" position="0 -0.04 0.12" visible="true">
+      <a-entity id="visorContainer" position="0 0.0 0.12" visible="true">
         <a-gltf-model
           id="visorModel"
           class="interactivo"
@@ -209,7 +209,7 @@
 
       // Calibración interactiva con teclado (+/- escala, flechas posición)
       let currentScale = 0.45;
-      let posY = -0.04;
+      let posY = 0.0;
       let posZ = 0.12;
       const visorModelEl = document.getElementById('visorModel');
 
