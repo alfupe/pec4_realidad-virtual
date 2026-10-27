@@ -13,6 +13,16 @@ Esta práctica corresponde a la **PEC 4** de la asignatura de *Realidad Virtual*
 
 La experiencia implementa un **Visor Táctico Cyberpunk** tridimensional y animado, integrado con una interfaz superpuesta (DOM Overlay HUD) reactiva, control de visibilidad del modelo 3D y un banco de efectos sonoros de ciencia ficción con corte dinámico de reproducción.
 
+### Características e Interactividad de la Aplicación
+
+1. **Seguimiento Facial en Tiempo Real:** Anclaje preciso en el entrecejo / puente nasal (`anchorIndex: 168`) con 6 grados de libertad relativos a la orientación de la cabeza.
+2. **Visor 3D Animado:** Modelo low-poly con materiales PBR de cristal traslúcido y haz holográfico frontal que oscila en bucle continuo mediante el componente `animation-mixer`.
+3. **Banco de Efectos de Sonido Sci-Fi:** Control de audio aleatorio con **corte inmediato** del sonido previo para evitar solapamientos acústicos.
+4. **Control de Visibilidad 3D:** Botón táctil para conmutar la visibilidad del visor en pantalla.
+5. **Doble Capa de Interactividad Aditiva:**
+   * **Por Clic / Toque Directo:** Interacción sobre el propio visor 3D en pantalla mediante raycaster de A-Frame (`.interactivo`).
+   * **Por Gesto Facial (Hands-Free):** Detección en tiempo real de la apertura amplia de la boca midiendo la distancia entre los labios superior e inferior (puntos anatómicos 13 y 14 de MediaPipe) para disparar efectos sonoros de forma reactiva sin tocar la pantalla.
+
 ### Enlace al Despliegue en GitHub Pages (HTTPS)
 
 > 🔗 **Acceso a la experiencia WebAR:**  
