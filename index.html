@@ -203,35 +203,6 @@
         });
       }
 
-      // Calibración interactiva con teclado (+/- escala, flechas posición)
-      let currentScale = 0.52;
-      let posY = 0.03;
-      let posZ = 0.13;
-      const visorModelEl = document.getElementById('visorModel');
-
-      window.addEventListener('keydown', (e) => {
-        let changed = false;
-        if (e.key === '+' || e.key === '=') {
-          currentScale = Number((currentScale + 0.03).toFixed(2));
-          changed = true;
-        } else if (e.key === '-' || e.key === '_') {
-          currentScale = Math.max(0.1, Number((currentScale - 0.03).toFixed(2)));
-          changed = true;
-        } else if (e.key === 'ArrowUp') {
-          posY = Number((posY + 0.01).toFixed(2));
-          changed = true;
-        } else if (e.key === 'ArrowDown') {
-          posY = Number((posY - 0.01).toFixed(2));
-          changed = true;
-        }
-
-        if (changed) {
-          visorModelEl.setAttribute('scale', `${currentScale} ${currentScale} ${currentScale}`);
-          visorContainer.setAttribute('position', `0 ${posY} ${posZ}`);
-          console.log(`Ajuste -> scale: ${currentScale}, position: 0 ${posY} ${posZ}`);
-        }
-      });
-
       // Control del diálogo informativo
       const btnInfoModal = document.getElementById('btnInfoModal');
       const btnCloseModal = document.getElementById('btnCloseModal');
