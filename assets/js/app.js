@@ -66,40 +66,6 @@ function initAudioController() {
       playRandomSound();
     });
   }
-
-  // Detección reactiva de gesto facial: Apertura de boca (MediaPipe 13 y 14)
-  const lipTop = document.getElementById('lipTop');
-  const lipBottom = document.getElementById('lipBottom');
-
-  if (lipTop && lipBottom) {
-    const pTop = new THREE.Vector3();
-    const pBottom = new THREE.Vector3();
-    let wasMouthOpen = false;
-    let mouthCooldown = false;
-
-    function checkMouthGesture() {
-      if (lipTop.object3D.visible && lipBottom.object3D.visible) {
-        pTop.setFromMatrixPosition(lipTop.object3D.matrix);
-        pBottom.setFromMatrixPosition(lipBottom.object3D.matrix);
-        const lipDistance = pTop.distanceTo(pBottom);
-
-        // Umbral de apertura intencionada de boca
-        if (lipDistance > 0.04) {
-          if (!wasMouthOpen && !mouthCooldown) {
-            wasMouthOpen = true;
-            mouthCooldown = true;
-            playRandomSound();
-            setTimeout(() => { mouthCooldown = false; }, 1200);
-          }
-        } else if (lipDistance < 0.025) {
-          wasMouthOpen = false;
-        }
-      }
-      requestAnimationFrame(checkMouthGesture);
-    }
-
-    requestAnimationFrame(checkMouthGesture);
-  }
 }
 
 // Controlador de visibilidad del visor 3D

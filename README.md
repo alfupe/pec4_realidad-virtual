@@ -19,9 +19,7 @@ La experiencia implementa un **Visor Táctico Cyberpunk** tridimensional y anima
 2. **Visor 3D Animado:** Modelo low-poly con materiales PBR de cristal traslúcido y haz holográfico frontal que oscila en bucle continuo mediante el componente `animation-mixer`.
 3. **Banco de Efectos de Sonido Sci-Fi:** Control de audio aleatorio con **corte inmediato** del sonido previo para evitar solapamientos acústicos.
 4. **Control de Visibilidad 3D:** Botón táctil para conmutar la visibilidad del visor en pantalla.
-5. **Doble Capa de Interactividad Aditiva:**
-   * **Por Clic / Toque Directo:** Interacción sobre el propio visor 3D en pantalla mediante raycaster de A-Frame (`.interactivo`).
-   * **Por Gesto Facial (Hands-Free):** Detección en tiempo real de la apertura amplia de la boca midiendo la distancia entre los labios superior e inferior (puntos anatómicos 13 y 14 de MediaPipe) para disparar efectos sonoros de forma reactiva sin tocar la pantalla.
+5. **Interactividad Aditiva por Clic Directo:** Posibilidad de interactuar tocando o haciendo clic directamente sobre el visor 3D en pantalla mediante raycaster de A-Frame (`.interactivo`).
 
 ### Enlace al Despliegue en GitHub Pages (HTTPS)
 
@@ -42,7 +40,7 @@ La experiencia implementa un **Visor Táctico Cyberpunk** tridimensional y anima
 
 | Criterio | Puntuación | Estado | Implementación Técnica en el Proyecto |
 | :--- | :---: | :---: | :--- |
-| **1. Originalidad** | **2 pts** | ✅ Superado | Propuesta que trasciende las típicas gafas estáticas: se diseña e implementa un **Visor Táctico Cyberpunk** futurista con materiales PBR emisivos, **animación integrada** mediante el componente `animation-mixer` de A-Frame Extras (haz oscilante de escaneo HUD) y **detección reactiva de gestos faciales** (apertura de boca en puntos 13 y 14 de MediaPipe) para el disparo hands-free de efectos sonoros. |
+| **1. Originalidad** | **2 pts** | ✅ Superado | Propuesta que trasciende las típicas gafas estáticas: se diseña e implementa un **Visor Táctico Cyberpunk** futurista con materiales PBR emisivos y **animación integrada** mediante el componente `animation-mixer` de A-Frame Extras (haz oscilante de escaneo HUD). |
 | **2. Sonidos Aleatorios** | **8 pts** | ✅ Superado | Botón interactivo en el DOM Overlay que reproduce pistas de forma pseudoaleatoria desde un banco de 3 efectos Sci-Fi. **Requisito crítico de UX:** ante cada pulsación, si existe un sonido en reproducción, se detiene de forma instantánea (`pause()` + reset de `currentTime = 0`) antes de reproducir la nueva pista, evitando solapamientos cacofónicos. |
 | **3. Objeto 3D y Face Tracking** | **7 pts** | ✅ Superado | Modelo 3D glTF optimizado anclado al rostro mediante `mindar-face-target` en el **punto anatómico 168** (entrecejo / puente nasal, posición canónica para visores y máscaras). Seguimiento continuo y fluido en los 6 grados de libertad relativos a la cabeza. Se incluye botón HTML para **conmutar la visibilidad (mostrar/ocultar)** del objeto en tiempo real. |
 | **4. Segmentación / Entorno AR** | **5 pts** | ✅ Superado | Integración limpia y estable de la escena 3D sobre el feed de la cámara web mediante WebRTC sin deformaciones de relación de aspecto (`object-fit: cover`). Incluye sistema de iluminación dual (ambiente + direccional) para dotar de volumen y realismo al visor. Feedback visual de detección (`targetFound` / `targetLost`). |
