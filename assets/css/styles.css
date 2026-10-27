@@ -53,6 +53,7 @@ a-scene,
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh; /* Dynamic viewport height para iOS Safari */
   z-index: 1000;
   pointer-events: none;
   display: flex;
@@ -60,7 +61,7 @@ a-scene,
   justify-content: space-between;
   padding: calc(14px + env(safe-area-inset-top))
            calc(16px + env(safe-area-inset-right))
-           calc(20px + env(safe-area-inset-bottom))
+           calc(24px + max(env(safe-area-inset-bottom), 16px))
            calc(16px + env(safe-area-inset-left));
 }
 
@@ -347,6 +348,11 @@ a-scene,
    Adaptabilidad Móvil (Responsive)
    ========================================================================== */
 @media (max-width: 520px) {
+  .hud {
+    height: 100dvh;
+    padding-bottom: calc(28px + max(env(safe-area-inset-bottom), 20px));
+  }
+
   .hud__card--info {
     flex-direction: column;
     align-items: flex-start;
