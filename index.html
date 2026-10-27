@@ -29,7 +29,7 @@
 
   <!-- Escena A-Frame con seguimiento facial MindAR -->
   <a-scene
-    mindar-face="filterMinCF: 0.001; filterBeta: 1; uiLoading: no; uiScanning: no"
+    mindar-face="filterMinCF: 0.001; filterBeta: 1; faceOccluder: false; uiLoading: no; uiScanning: no"
     embedded
     color-space="sRGB"
     renderer="colorManagement: true, physicallyCorrectLights: true, alpha: true"
@@ -51,7 +51,7 @@
 
     <!-- Anclaje al entrecejo (índice 168) -->
     <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168">
-      <a-entity id="visorContainer" position="0 0.03 0.13" visible="true">
+      <a-entity id="visorContainer" position="0 0.03 0.13" visible="false">
         <a-gltf-model
           id="visorModel"
           class="interactivo"

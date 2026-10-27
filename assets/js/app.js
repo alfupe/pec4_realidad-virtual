@@ -72,6 +72,9 @@ function initAudioController() {
   }
 }
 
+// Estado global de visibilidad deseado por el usuario
+let isVisorUserEnabled = true;
+
 // Controlador de visibilidad del visor 3D
 function initVisorController() {
   const btnToggleVisor = document.getElementById('btnToggleVisor');
@@ -79,19 +82,18 @@ function initVisorController() {
   const visorModel = document.getElementById('visorModel');
   const visorBtnIcon = document.getElementById('visorBtnIcon');
   const visorBtnLabel = document.getElementById('visorBtnLabel');
-  let isVisorVisible = true;
 
   btnToggleVisor.addEventListener('click', () => {
-    isVisorVisible = !isVisorVisible;
-    visorContainer.setAttribute('visible', isVisorVisible);
-    btnToggleVisor.setAttribute('aria-pressed', (!isVisorVisible).toString());
+    isVisorUserEnabled = !isVisorUserEnabled;
+    visorContainer.setAttribute('visible', isVisorUserEnabled);
+    btnToggleVisor.setAttribute('aria-pressed', (!isVisorUserEnabled).toString());
 
     // Al ocultar, quitamos la clase interactivo para que el raycaster no lo detecte ni muestre cursor
     if (visorModel) {
-      visorModel.classList.toggle('interactivo', isVisorVisible);
+      visorModel.classList.toggle('interactivo', isVisorUserEnabled);
     }
 
-    if (isVisorVisible) {
+    if (isVisorUserEnabled) {
       visorBtnIcon.textContent = '👁️';
       visorBtnLabel.textContent = 'Ocultar Visor';
       btnToggleVisor.classList.remove('hud__btn--hidden');
@@ -142,6 +144,10 @@ function initSceneLifecycleController() {
 
   sceneEl.addEventListener('targetFound', () => {
     console.log('WebAR: Rostro detectado con éxito');
+    const visorContainer = document.getElementById('visorContainer');
+    if (visorContainer && isVisorUserEnabled) {
+      visorContainer.setAttribute('visible', true);
+    }
   });
 
   sceneEl.addEventListener('targetLost', () => {
