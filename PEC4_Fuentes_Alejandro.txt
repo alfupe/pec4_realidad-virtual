@@ -1,0 +1,9 @@
+PEC 4: WebAR con MindAR y A-Frame (Face Tracking)
+Estudiante: Alejandro Fuentes Pérez
+Asignatura: Realidad virtual (UOC)
+
+Enlace del proyecto (GitHub Pages):
+https://alfupe.github.io/pec4_realidad-virtual/
+
+Repositorio en GitHub:
+https://github.com/alfupe/pec4_realidad-virtual

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>PEC4: WebAR Face Tracking - Visor Táctico</title>
+  <meta name="description" content="PEC4 Realidad Virtual UOC - Alejandro Fuentes Pérez">
+
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+</head>
+<body>
+
+  <!-- Interfaz de usuario HUD -->
+  <div class="hud">
+    <header class="hud__header">
+      <div class="hud__card hud__card--info">
+        <h1 class="hud__title">
+          <span>Visor Táctico AR</span>
+          <button id="btnInfoModal" class="hud__info-btn" type="button" title="Instrucciones" aria-label="Instrucciones">ℹ️</button>
+        </h1>
+        <p class="hud__author">Alejandro Fuentes Pérez · UOC Realidad Virtual</p>
+      </div>
+
+      <div class="hud__card hud__card--status">
+        <div id="trackingBadge" class="hud__status" role="status" aria-live="polite">
+          <span class="hud__pulse-dot"></span>
+          <span id="trackingText" class="hud__status-text">Buscando rostro...</span>
+        </div>
+      </div>
+    </header>
+
+    <div id="centerReticle" class="hud__reticle" aria-hidden="true"></div>
+
+    <footer class="hud__footer">
+      <div id="audioTicker" class="hud__ticker">
+        Audio: <span id="audioTrackName" class="hud__ticker-track">En espera</span>
+      </div>
+
+      <div class="hud__controls">
+        <button id="btnPlaySound" class="hud__btn hud__btn--audio" type="button">
+          <span class="hud__btn-icon">🔊</span>
+          <span class="hud__btn-label">Sonido Aleatorio</span>
+        </button>
+
+        <button id="btnToggleVisor" class="hud__btn hud__btn--visor" type="button" aria-pressed="false">
+          <span id="visorBtnIcon" class="hud__btn-icon">👁️</span>
+          <span id="visorBtnLabel" class="hud__btn-label">Ocultar Visor</span>
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal de instrucciones e información -->
+  <aside id="infoModal" class="hud-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h2 id="modalTitle" class="hud-modal__title">Instrucciones de Uso</h2>
+    <ul class="hud-modal__list">
+      <li class="hud-modal__item">Enfoca tu rostro hacia la cámara para calibrar el seguimiento facial automático.</li>
+      <li class="hud-modal__item">Pulsa en <strong>Sonido Aleatorio</strong> (o haz clic directamente en el visor) para reproducir efectos Sci-Fi.</li>
+      <li class="hud-modal__item">Usa el botón <strong>Ocultar/Mostrar Visor</strong> para alternar la visualización del modelo tridimensional.</li>
+      <li class="hud-modal__item">El modelo incluye animación continua en bucle del haz de escaneo frontal.</li>
+    </ul>
+    <button id="btnCloseModal" class="hud-modal__close-btn" type="button">Cerrar</button>
+  </aside>
+
+  <!-- Escena A-Frame con seguimiento facial -->
+  <a-scene
+    mindar-face="filterMinCF: 0.001; filterBeta: 1"
+    embedded
+    color-space="sRGB"
+    renderer="colorManagement: true, physicallyCorrectLights: true, alpha: true"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false">
+
+    <a-assets timeout="10000">
+      <a-asset-item id="cyberVisorModel" src="assets/models/cyber_visor.glb"></a-asset-item>
+      <audio id="audioScan" src="assets/audio/scifi_scan.wav" preload="auto"></audio>
+      <audio id="audioActivate" src="assets/audio/scifi_activate.wav" preload="auto"></audio>
+      <audio id="audioTarget" src="assets/audio/scifi_target.wav" preload="auto"></audio>
+    </a-assets>
+
+    <a-camera active="false" position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse" raycaster="far: 10000; objects: .interactivo"></a-camera>
+
+    <!-- Luces para el sombreado del modelo -->
+    <a-light type="ambient" intensity="0.85"></a-light>
+    <a-light type="directional" position="0 2 3" intensity="1.2"></a-light>
+
+    <!-- Anclaje al entrecejo (índice 168) -->
+    <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168">
+      <a-entity id="visorContainer" position="0 -0.04 0.12" visible="true">
+        <a-gltf-model
+          id="visorModel"
+          class="interactivo"
+          src="#cyberVisorModel"
+          rotation="0 0 0"
+          position="0 0 0"
+          scale="0.45 0.45 0.45"
+          animation-mixer="clip: *; loop: repeat">
+        </a-gltf-model>
+      </a-entity>
+    </a-entity>
+  </a-scene>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Banco de pistas de audio
+      const audioTracks = [
+        { name: 'Escáner Táctico', el: document.getElementById('audioScan') },
+        { name: 'Activación HUD', el: document.getElementById('audioActivate') },
+        { name: 'Fijación de Objetivo', el: document.getElementById('audioTarget') }
+      ];
+
+      const btnPlaySound = document.getElementById('btnPlaySound');
+      const audioTrackName = document.getElementById('audioTrackName');
+      let currentPlayingAudio = null;
+      let lastAudioIndex = -1;
+
+      // Reproducción aleatoria cortando la pista anterior si está activa
+      function playRandomSound() {
+        if (currentPlayingAudio) {
+          currentPlayingAudio.pause();
+          currentPlayingAudio.currentTime = 0;
+          currentPlayingAudio = null;
+        }
+
+        // Evitar repetir la misma pista dos veces consecutivas
+        let randomIndex;
+        do {
+          randomIndex = Math.floor(Math.random() * audioTracks.length);
+        } while (randomIndex === lastAudioIndex && audioTracks.length > 1);
+
+        lastAudioIndex = randomIndex;
+        const track = audioTracks[randomIndex];
+        currentPlayingAudio = track.el;
+
+        btnPlaySound.classList.add('hud__btn--playing');
+        audioTrackName.textContent = track.name;
+
+        currentPlayingAudio.play().catch((err) => {
+          console.warn('Reproducción de audio bloqueada:', err);
+          resetAudioState();
+        });
+
+        currentPlayingAudio.onended = () => {
+          resetAudioState();
+          currentPlayingAudio = null;
+        };
+      }
+
+      function resetAudioState() {
+        btnPlaySound.classList.remove('hud__btn--playing');
+        audioTrackName.textContent = 'En espera';
+      }
+
+      btnPlaySound.addEventListener('click', playRandomSound);
+
+      // Conmutar visibilidad del visor 3D
+      const btnToggleVisor = document.getElementById('btnToggleVisor');
+      const visorContainer = document.getElementById('visorContainer');
+      const visorBtnIcon = document.getElementById('visorBtnIcon');
+      const visorBtnLabel = document.getElementById('visorBtnLabel');
+      let isVisorVisible = true;
+
+      btnToggleVisor.addEventListener('click', () => {
+        isVisorVisible = !isVisorVisible;
+        visorContainer.setAttribute('visible', isVisorVisible);
+        btnToggleVisor.setAttribute('aria-pressed', (!isVisorVisible).toString());
+
+        if (isVisorVisible) {
+          visorBtnIcon.textContent = '👁️';
+          visorBtnLabel.textContent = 'Ocultar Visor';
+          btnToggleVisor.classList.remove('hud__btn--hidden');
+        } else {
+          visorBtnIcon.textContent = '🕶️';
+          visorBtnLabel.textContent = 'Mostrar Visor';
+          btnToggleVisor.classList.add('hud__btn--hidden');
+        }
+      });
+
+      // Eventos de detección facial con MindAR
+      const faceTarget = document.getElementById('faceTarget');
+      const trackingBadge = document.getElementById('trackingBadge');
+      const trackingText = document.getElementById('trackingText');
+      const centerReticle = document.getElementById('centerReticle');
+
+      faceTarget.addEventListener('targetFound', () => {
+        trackingBadge.classList.add('hud__status--detected');
+        trackingText.textContent = 'Rostro detectado';
+        centerReticle.classList.add('hud__reticle--active');
+      });
+
+      faceTarget.addEventListener('targetLost', () => {
+        trackingBadge.classList.remove('hud__status--detected');
+        trackingText.textContent = 'Buscando rostro...';
+        centerReticle.classList.remove('hud__reticle--active');
+      });
+
+      // Interacción directa por clic en el modelo 3D
+      const interactiveModel = document.querySelector('.interactivo');
+      if (interactiveModel) {
+        interactiveModel.addEventListener('click', (e) => {
+          if (e && e.stopPropagation) e.stopPropagation();
+          playRandomSound();
+        });
+      }
+
+      // Calibración interactiva con teclado (+/- escala, flechas posición)
+      let currentScale = 0.45;
+      let posY = -0.04;
+      let posZ = 0.12;
+      const visorModelEl = document.getElementById('visorModel');
+
+      window.addEventListener('keydown', (e) => {
+        let changed = false;
+        if (e.key === '+' || e.key === '=') {
+          currentScale = Number((currentScale + 0.03).toFixed(2));
+          changed = true;
+        } else if (e.key === '-' || e.key === '_') {
+          currentScale = Math.max(0.1, Number((currentScale - 0.03).toFixed(2)));
+          changed = true;
+        } else if (e.key === 'ArrowUp') {
+          posY = Number((posY + 0.01).toFixed(2));
+          changed = true;
+        } else if (e.key === 'ArrowDown') {
+          posY = Number((posY - 0.01).toFixed(2));
+          changed = true;
+        }
+
+        if (changed) {
+          visorModelEl.setAttribute('scale', `${currentScale} ${currentScale} ${currentScale}`);
+          visorContainer.setAttribute('position', `0 ${posY} ${posZ}`);
+          console.log(`Ajuste -> scale: ${currentScale}, position: 0 ${posY} ${posZ}`);
+        }
+      });
+
+      // Control del diálogo informativo
+      const btnInfoModal = document.getElementById('btnInfoModal');
+      const btnCloseModal = document.getElementById('btnCloseModal');
+      const infoModal = document.getElementById('infoModal');
+
+      btnInfoModal.addEventListener('click', () => {
+        infoModal.classList.add('hud-modal--active');
+      });
+
+      btnCloseModal.addEventListener('click', () => {
+        infoModal.classList.remove('hud-modal--active');
+      });
+    });
+  </script>
+</body>
+</html>
