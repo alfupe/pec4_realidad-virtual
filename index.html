@@ -11,6 +11,13 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Visor WebAR">
 
+  <!-- Detección temprana de Android para optimización de capas de renderizado WebGL -->
+  <script>
+    if (/Android/i.test(navigator.userAgent)) {
+      document.documentElement.classList.add('is-android');
+    }
+  </script>
+
   <link rel="stylesheet" href="assets/css/styles.css">
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -20,7 +27,45 @@
 </head>
 <body>
 
-  <!-- Interfaz de usuario HUD -->
+  <!-- Escena A-Frame con seguimiento facial MindAR -->
+  <a-scene
+    mindar-face="filterMinCF: 0.001; filterBeta: 1; uiLoading: no; uiScanning: no"
+    embedded
+    color-space="sRGB"
+    renderer="colorManagement: true, physicallyCorrectLights: true, alpha: true"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false">
+
+    <a-assets timeout="10000">
+      <a-asset-item id="cyberVisorModel" src="assets/models/cyber_visor.glb"></a-asset-item>
+      <audio id="audioScan" src="assets/audio/scifi_scan.wav" preload="auto"></audio>
+      <audio id="audioActivate" src="assets/audio/scifi_activate.wav" preload="auto"></audio>
+      <audio id="audioTarget" src="assets/audio/scifi_target.wav" preload="auto"></audio>
+    </a-assets>
+
+    <a-camera active="false" position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse" raycaster="far: 10000; objects: .interactivo"></a-camera>
+
+    <!-- Luces para el sombreado del modelo -->
+    <a-light type="ambient" intensity="0.85"></a-light>
+    <a-light type="directional" position="0 2 3" intensity="1.2"></a-light>
+
+    <!-- Anclaje al entrecejo (índice 168) -->
+    <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168">
+      <a-entity id="visorContainer" position="0 0.03 0.13" visible="true">
+        <a-gltf-model
+          id="visorModel"
+          class="interactivo"
+          src="#cyberVisorModel"
+          rotation="0 0 0"
+          position="0 0 0"
+          scale="0.52 0.52 0.52"
+          animation-mixer="clip: *; loop: repeat">
+        </a-gltf-model>
+      </a-entity>
+    </a-entity>
+  </a-scene>
+
+  <!-- Interfaz de usuario HUD (DOM Overlay flotante) -->
   <div class="hud">
     <header class="hud__header">
       <div class="hud__card hud__card--info">
@@ -68,43 +113,5 @@
 
     <button id="btnCloseModal" class="hud-modal__close-btn" type="button">Cerrar</button>
   </aside>
-
-  <!-- Escena A-Frame con seguimiento facial -->
-  <a-scene
-    mindar-face="filterMinCF: 0.001; filterBeta: 1"
-    embedded
-    color-space="sRGB"
-    renderer="colorManagement: true, physicallyCorrectLights: true, alpha: true"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false">
-
-    <a-assets timeout="10000">
-      <a-asset-item id="cyberVisorModel" src="assets/models/cyber_visor.glb"></a-asset-item>
-      <audio id="audioScan" src="assets/audio/scifi_scan.wav" preload="auto"></audio>
-      <audio id="audioActivate" src="assets/audio/scifi_activate.wav" preload="auto"></audio>
-      <audio id="audioTarget" src="assets/audio/scifi_target.wav" preload="auto"></audio>
-    </a-assets>
-
-    <a-camera active="false" position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse" raycaster="far: 10000; objects: .interactivo"></a-camera>
-
-    <!-- Luces para el sombreado del modelo -->
-    <a-light type="ambient" intensity="0.85"></a-light>
-    <a-light type="directional" position="0 2 3" intensity="1.2"></a-light>
-
-    <!-- Anclaje al entrecejo (índice 168) -->
-    <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168">
-      <a-entity id="visorContainer" position="0 0.03 0.13" visible="true">
-        <a-gltf-model
-          id="visorModel"
-          class="interactivo"
-          src="#cyberVisorModel"
-          rotation="0 0 0"
-          position="0 0 0"
-          scale="0.52 0.52 0.52"
-          animation-mixer="clip: *; loop: repeat">
-        </a-gltf-model>
-      </a-entity>
-    </a-entity>
-  </a-scene>
 </body>
 </html>

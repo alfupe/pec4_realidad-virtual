@@ -118,9 +118,32 @@ function initModalController() {
   });
 }
 
+// Controlador del ciclo de vida y eventos del sistema AR
+function initSceneLifecycleController() {
+  const sceneEl = document.querySelector('a-scene');
+  const audioTrackName = document.getElementById('audioTrackName');
+
+  if (!sceneEl) return;
+
+  sceneEl.addEventListener('arReady', () => {
+    console.log('WebAR: Seguimiento facial calibrado y activo');
+  });
+
+  sceneEl.addEventListener('arError', (event) => {
+    console.warn('WebAR: Error de inicialización de cámara o soporte', event.detail);
+    if (audioTrackName) {
+      audioTrackName.textContent = 'Cámara no accesible';
+    }
+  });
+}
+
 // Inicialización de controladores al cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
+  if (/Android/i.test(navigator.userAgent)) {
+    document.documentElement.classList.add('is-android');
+  }
   initAudioController();
   initVisorController();
   initModalController();
+  initSceneLifecycleController();
 });
