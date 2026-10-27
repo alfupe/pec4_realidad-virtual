@@ -18,12 +18,12 @@
     }
   </script>
 
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css?v=1.2">
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
-  <script src="assets/js/app.js" defer></script>
+  <script src="assets/js/app.js?v=1.2" defer></script>
 </head>
 <body>
 
@@ -50,8 +50,8 @@
     <a-light type="directional" position="0 2 3" intensity="1.2"></a-light>
 
     <!-- Anclaje al entrecejo (índice 168) -->
-    <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168">
-      <a-entity id="visorContainer" position="0 0.03 0.13" visible="false">
+    <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168" visible="false">
+      <a-entity id="visorContainer" position="0 0.03 0.13" visible="true">
         <a-gltf-model
           id="visorModel"
           class="interactivo"
@@ -71,6 +71,7 @@
       <div class="hud__card hud__card--info">
         <h1 class="hud__title">
           <span>Visor Táctico AR</span>
+          <span class="hud__version-badge">v1.2</span>
           <button id="btnInfoModal" class="hud__info-btn" type="button" title="Instrucciones" aria-label="Instrucciones">ℹ️</button>
         </h1>
         <p class="hud__author">Alejandro Fuentes Pérez · UOC Realidad Virtual</p>
@@ -79,7 +80,7 @@
 
     <footer class="hud__footer">
       <div id="audioTicker" class="hud__ticker">
-        Audio: <span id="audioTrackName" class="hud__ticker-track">En espera</span>
+        Audio: <span id="audioTrackName" class="hud__ticker-track">Iniciando visor...</span>
       </div>
 
       <div class="hud__controls">
