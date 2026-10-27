@@ -54,6 +54,7 @@
       <li class="hud-modal__item">Pulsa en <strong>Sonido Aleatorio</strong> (o haz clic directamente en el visor) para reproducir efectos Sci-Fi.</li>
       <li class="hud-modal__item">Usa el botón <strong>Ocultar/Mostrar Visor</strong> para alternar la visualización del modelo tridimensional.</li>
       <li class="hud-modal__item">El modelo incluye animación continua en bucle del haz de escaneo frontal.</li>
+      <li class="hud-modal__item"><strong>Gesto facial interactivo:</strong> Abre la boca ampliamente frente a la cámara para disparar efectos de audio táctico sin manos (detección reactiva en puntos 13 y 14 de MediaPipe).</li>
     </ul>
     <button id="btnCloseModal" class="hud-modal__close-btn" type="button">Cerrar</button>
   </aside>
@@ -94,6 +95,10 @@
         </a-gltf-model>
       </a-entity>
     </a-entity>
+
+    <!-- Anclajes para detección reactiva de gestos faciales (labio superior e inferior) -->
+    <a-entity id="lipTop" mindar-face-target="anchorIndex: 13"></a-entity>
+    <a-entity id="lipBottom" mindar-face-target="anchorIndex: 14"></a-entity>
   </a-scene>
 </body>
 </html>
