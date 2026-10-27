@@ -132,38 +132,6 @@ a-scene,
   color: var(--text-main);
 }
 
-/* Indicador de seguimiento facial (Badge superior derecho) */
-.hud__card--status {
-  padding: 6px 14px;
-  border-radius: var(--radius-pill);
-}
-
-.hud__status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.74rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-.hud__pulse-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: #eab308; /* Ámbar suave mientras busca */
-  display: inline-block;
-}
-
-.hud__status--hidden {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-4px);
-  pointer-events: none;
-  transition: opacity 0.35s ease, visibility 0.35s ease, transform 0.35s ease;
-}
-
 /* ==========================================================================
    Barra Inferior y Controles (Estilo Dock de Cámara Flotante)
    ========================================================================== */

@@ -24,13 +24,6 @@
         </h1>
         <p class="hud__author">Alejandro Fuentes Pérez · UOC Realidad Virtual</p>
       </div>
-
-      <div class="hud__card hud__card--status">
-        <div id="trackingBadge" class="hud__status" role="status" aria-live="polite">
-          <span class="hud__pulse-dot"></span>
-          <span id="trackingText" class="hud__status-text">Buscando rostro...</span>
-        </div>
-      </div>
     </header>
 
     <footer class="hud__footer">
@@ -176,22 +169,6 @@
           visorBtnLabel.textContent = 'Mostrar Visor';
           btnToggleVisor.classList.add('hud__btn--hidden');
         }
-      });
-
-      // Eventos de detección facial con MindAR
-      const faceTarget = document.getElementById('faceTarget');
-      const trackingBadge = document.getElementById('trackingBadge');
-      const trackingText = document.getElementById('trackingText');
-
-      faceTarget.addEventListener('targetFound', () => {
-        // Al encontrar el rostro, se oculta el indicador para dejar la pantalla despejada
-        trackingBadge.classList.add('hud__status--hidden');
-      });
-
-      faceTarget.addEventListener('targetLost', () => {
-        // Si se pierde el rostro, vuelve a mostrarse el aviso
-        trackingBadge.classList.remove('hud__status--hidden');
-        trackingText.textContent = 'Buscando rostro...';
       });
 
       // Interacción directa por clic en el modelo 3D
