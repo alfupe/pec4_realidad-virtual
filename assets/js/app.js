@@ -62,6 +62,10 @@ function initAudioController() {
   // Evento de clic directo sobre el modelo 3D (raycaster)
   if (interactiveModel) {
     interactiveModel.addEventListener('click', (e) => {
+      const visorContainer = document.getElementById('visorContainer');
+      const isVisible = visorContainer && visorContainer.getAttribute('visible');
+      if (isVisible === false || isVisible === 'false') return;
+
       if (e && e.stopPropagation) e.stopPropagation();
       playRandomSound();
     });
@@ -72,6 +76,7 @@ function initAudioController() {
 function initVisorController() {
   const btnToggleVisor = document.getElementById('btnToggleVisor');
   const visorContainer = document.getElementById('visorContainer');
+  const visorModel = document.getElementById('visorModel');
   const visorBtnIcon = document.getElementById('visorBtnIcon');
   const visorBtnLabel = document.getElementById('visorBtnLabel');
   let isVisorVisible = true;
@@ -80,6 +85,11 @@ function initVisorController() {
     isVisorVisible = !isVisorVisible;
     visorContainer.setAttribute('visible', isVisorVisible);
     btnToggleVisor.setAttribute('aria-pressed', (!isVisorVisible).toString());
+
+    // Al ocultar, quitamos la clase interactivo para que el raycaster no lo detecte ni muestre cursor
+    if (visorModel) {
+      visorModel.classList.toggle('interactivo', isVisorVisible);
+    }
 
     if (isVisorVisible) {
       visorBtnIcon.textContent = '👁️';
