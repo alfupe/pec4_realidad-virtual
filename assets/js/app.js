@@ -147,27 +147,47 @@ function initInteractiveCubeController() {
     const dt = Math.min((time - lastTime) * 0.001, 0.1); // delta time en segundos
     lastTime = time;
 
-    // Calculamos los límites visibles del frustum en la profundidad posZ
-    const cameraEl = document.querySelector('a-camera');
-    let limitX = 0.95;
-    let limitY = 1.45;
+    // Viewport visible real de la ventana / pantalla del dispositivo
+    const winW = window.innerWidth || document.documentElement.clientWidth;
+    const winH = window.innerHeight || document.documentElement.clientHeight;
+    const screenAspect = winW / winH;
 
+    let visibleHeight3D = 2.6;
+    let visibleWidth3D = visibleHeight3D * screenAspect;
+
+    const cameraEl = document.querySelector('a-camera');
     if (cameraEl && cameraEl.components && cameraEl.components.camera) {
       const threeCamera = cameraEl.components.camera.camera;
       if (threeCamera && threeCamera.fov) {
-        // Altura visible a distancia |posZ|
-        const visibleHeight = 2 * Math.tan(THREE.MathUtils.degToRad(threeCamera.fov / 2)) * Math.abs(posZ);
-        const visibleWidth = visibleHeight * (threeCamera.aspect || (window.innerWidth / window.innerHeight));
-        limitX = (visibleWidth / 2) - cubeRadius;
-        limitY = (visibleHeight / 2) - cubeRadius;
+        // Cono de visión 3D total de la cámara a profundidad |posZ|
+        const fullHeight3D = 2 * Math.tan(THREE.MathUtils.degToRad(threeCamera.fov / 2)) * Math.abs(posZ);
+        const cameraAspect = threeCamera.aspect || screenAspect;
+
+        // MindAR ajusta el viewport de cámara con lógica 'object-fit: cover':
+        // En móviles verticales (portrait), cameraAspect > screenAspect: el alto encaja al 100%
+        // y el ancho de la escena 3D se desborda horizontalmente recortándose por los laterales.
+        // En pantallas horizontales o tablets ocurre lo inverso.
+        if (cameraAspect >= screenAspect) {
+          visibleHeight3D = fullHeight3D;
+          visibleWidth3D = fullHeight3D * screenAspect;
+        } else {
+          visibleWidth3D = fullHeight3D * cameraAspect;
+          visibleHeight3D = visibleWidth3D / screenAspect;
+        }
       }
     }
+
+    // Margen de colisión del cubo (tamaño 0.28m; con rotación tridimensional
+    // el semidiámetro a aristas/caras es ~0.19m para un contacto visual perfecto con el marco)
+    const cubeMargin = 0.19;
+    const limitX = Math.max(0.15, (visibleWidth3D / 2) - cubeMargin);
+    const limitY = Math.max(0.15, (visibleHeight3D / 2) - cubeMargin);
 
     // Actualizamos posición según velocidad
     posX += velX * dt;
     posY += velY * dt;
 
-    // Detección y rebote en bordes horizontales (izq / der)
+    // Detección y rebote exacto en bordes horizontales de pantalla (izq / der)
     if (posX >= limitX) {
       posX = limitX;
       velX = -Math.abs(velX);
@@ -178,7 +198,7 @@ function initInteractiveCubeController() {
       triggerBounceEffect();
     }
 
-    // Detección y rebote en bordes verticales (arriba / abajo)
+    // Detección y rebote exacto en bordes verticales de pantalla (arriba / abajo)
     if (posY >= limitY) {
       posY = limitY;
       velY = -Math.abs(velY);

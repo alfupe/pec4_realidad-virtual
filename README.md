@@ -150,3 +150,38 @@ Si se desea sustituir cualquiera de los elementos por modelos o efectos externos
   - [Freesound.org (Creative Commons)](https://freesound.org/search/?q=scifi+ui)
   - [Sonniss GDC Audio Archives (Royalty-Free Commercial & Educational)](https://sonniss.com/gameaudiogdc)
   - [Mixkit Sound Effects (Free License)](https://mixkit.co/free-sound-effects/sci-fi/)
+
+---
+
+## 7. Declaración de uso de Inteligencia Artificial (IA)
+
+Siguiendo las directrices institucionales de la UOC sobre el uso ético, crítico y responsable de las herramientas de Inteligencia Artificial en las actividades de evaluación, se detalla a continuación el alcance de su empleo en la realización de esta práctica:
+
+### Herramienta utilizada
+Asistente de Inteligencia Artificial (Gemini / Antigravity).
+
+### Objetivos perseguidos
+* **Asistencia técnica en la configuración de la arquitectura WebAR:** Integración de la librería **MindAR (v1.2.5)** sobre **A-Frame (v1.5.0)** para tracking facial en tiempo real vía WebGL y WebRTC en navegadores móviles (iOS Safari, Android Chrome).
+* **Búsqueda y adaptación de modelos 3D con licencias libres:** Localización de alternativas al modelo inicial de visor genérico, adoptando el modelo tridimensional estilizado *"Scouter (Dragon Ball)"* de Drawnah bajo licencia Creative Commons Attribution (CC BY 4.0), así como la normalización formal de los textos de créditos y atribuciones académicas tanto en el diálogo modal de la aplicación como en este documento.
+* **Física y matemáticas del cono de cámara (Frustum):** Asistencia en el cálculo trigonométrico del campo de visión (`fov`), profundidad focal y compensación de la relación de aspecto (*aspect ratio*) adaptada a la lógica `object-fit: cover` de MindAR, logrando que el objeto primitivo 3D interactivo (`#energyCube`) detecte y rebote milimétricamente en los cuatro bordes visibles de la pantalla del dispositivo (estilo salvapantallas DVD) tanto en orientación vertical como panorámica.
+* **Resolución de incidencias de renderizado 3D:** Diagnóstico y corrección del plano de recorte cercano de la cámara (`camera.near = 0.05`), evitando que los objetos 3D se cortasen en diagonal al aproximarse al plano del usuario.
+* **Calibración anatómica del anclaje facial:** Determinación fina del vector de desplazamiento espacial (`position="0.62 -0.26 -0.16"`) respecto al punto de anclaje 168 (entrecejo/sien) para el ajuste ergonómico sobre la cuenca ocular izquierda.
+* **Auditoría de compatibilidad cross-browser y estándares móviles:** Revisión de restricciones de reproducción automática de audio (*Autoplay Policy*), síntesis/desbloqueo de audio Web Audio API, aceleración por hardware (`translate3d`) y gestión de capas `z-index` para prevenir artefactos en el compositor WebGL de Android.
+* **Estructuración jerárquica de la documentación técnica:** Redacción técnica de la memoria del proyecto, instrucciones de ejecución local y pautas de despliegue seguro en GitHub Pages.
+
+### Instrucciones o prompts representativos
+> «¿Cómo podemos anclar de forma estable un modelo 3D de gafas o visor al rostro usando MindAR y A-Frame en el navegador sin dependencias nativas?»
+
+> «El visor original se ve tosco; busca o adapta un modelo 3D estilizado tipo Scouter de Dragon Ball con licencia Creative Commons Attribution y redacta su crédito formal.»
+
+> «Calibra el offset espacial del Scouter respecto al anclaje 168 (entrecejo/sien) para que encaje de forma precisa sobre el ojo izquierdo del usuario.»
+
+> «Añade un objeto 3D primitivo adicional (un cubo de energía) que no esté pegado al rostro sino que rebote de forma continua por los bordes de la pantalla como el salvapantallas de un DVD, cambiando de color en cada choque y reaccionando al toque con sonido y giro rápido.»
+
+> «En móviles Android el cubo y el visor se cortaban diagonalmente y el cubo se salía por los lados izquierdo y derecho antes de rebotar; analiza el frustum y la relación de aspecto de MindAR y ajusta el plano de recorte cercano (`near plane`).»
+
+### Respuestas obtenidas
+La herramienta proporcionó fragmentos de código para A-Frame y Three.js con cálculos trigonométricos de frustum (`fov`, `aspect`, proyección de bordes y cálculo de desbordamiento horizontal), asistió en la calibración iterativa de posiciones espaciales 3D, sugirió la arquitectura de eventos desacoplada para audio e interacción táctil, y colaboró en el diagnóstico del escalado de MindAR (recorte horizontal de la cámara mediante overflow en pantallas verticales).
+
+### Proceso de revisión, reelaboración y edición
+El uso de estas herramientas ha tenido un carácter estrictamente consultivo, instrumental y de apoyo técnico/editorial. Tanto la concepción temática de la práctica (la elección del Scouter de Dragon Ball, la incorporación de la física de rebote del cubo con cambio cromático, el diseño de la interfaz HUD y la paleta de colores), como la calibración visual del anclaje 3D sobre el propio rostro, la comprobación acústica, la depuración empírica de compatibilidad en múltiples navegadores y dispositivos reales (escritorio, Android y iOS) y la verificación del correcto funcionamiento en GitHub Pages son fruto de mi propio trabajo y han sido dirigidos, evaluados y validados íntegramente por mí.

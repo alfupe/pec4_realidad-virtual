@@ -341,7 +341,7 @@ a-scene {
 }
 
 .hud-modal__credits {
-  margin: 12px 0 16px;
+  margin: 12px 0 10px;
   padding: 10px 14px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-glass);
@@ -367,6 +367,40 @@ a-scene {
 
 .hud-modal__credits-text a:hover {
   color: #bfdbfe;
+}
+
+.hud-modal__ai-box {
+  margin: 10px 0 16px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+}
+
+.hud-modal__section-title {
+  margin: 0 0 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.hud-modal__ai-text {
+  margin: 0;
+  font-size: 0.69rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.hud-modal__ai-text strong {
+  color: var(--text-secondary);
+}
+
+.hud-modal__ai-text a {
+  color: #93c5fd;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .hud-modal__close-btn {
