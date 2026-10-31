@@ -129,10 +129,14 @@ En cumplimiento del criterio de documentación y propiedad intelectual, se detal
 
 | Recurso | Archivo | Autor / Fuente | Licencia | Enlace de Referencia |
 | :--- | :--- | :--- | :---: | :--- |
-| **Visor Táctico Cyberpunk (3D glTF)** | `assets/models/cyber_visor.glb` | Alejandro Fuentes Pérez (Modelado 3D exportado a glTF 2.0 con animación de escáner) | **CC0 (Dominio Público)** | Creación propia optimizada para WebAR |
+| **Modelo 3D Scouter Dragon Ball** | `assets/models/scouter_dbz.glb` | **Drawnah** (Ezequiel Muñoz) | **CC BY 4.0** (Creative Commons Attribution) | ["Scouter (Dragon Ball)"](https://skfb.ly/oxGv8) en Sketchfab (Licencia: [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)) |
+| **Cubo Holográfico Reactivo (3D)** | Primitiva A-Frame (`<a-entity geometry="primitive: box">`) | Alejandro Fuentes Pérez | **CC0 (Dominio Público)** | Generación procedimental PBR interactiva |
 | **Efecto de Audio 1: Escáner Táctico** | `assets/audio/scifi_scan.wav` | Alejandro Fuentes Pérez (Diseño y síntesis de efectos de audio Sci-Fi a 44.1 kHz) | **CC0 (Dominio Público)** | [Freesound Sci-Fi Radar](https://freesound.org/) |
 | **Efecto de Audio 2: Activación HUD** | `assets/audio/scifi_activate.wav` | Alejandro Fuentes Pérez (Diseño y síntesis de efectos de audio Sci-Fi a 44.1 kHz) | **CC0 (Dominio Público)** | [Freesound Sci-Fi Charge](https://freesound.org/) |
 | **Efecto de Audio 3: Target Lock** | `assets/audio/scifi_target.wav` | Alejandro Fuentes Pérez (Diseño y síntesis de efectos de audio Sci-Fi a 44.1 kHz) | **CC0 (Dominio Público)** | [Freesound Target Lock](https://freesound.org/) |
+
+> **Nota de Licencia y Atribución:**  
+> *"Scouter (Dragon Ball)" (https://skfb.ly/oxGv8) by Drawnah is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).*
 
 ### Repositorios Públicos Recomendados para Recursos Alternativos
 

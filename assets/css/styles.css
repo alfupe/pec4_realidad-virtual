@@ -340,6 +340,35 @@ a-scene {
   text-align: center;
 }
 
+.hud-modal__credits {
+  margin: 12px 0 16px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+}
+
+.hud-modal__credits-text {
+  margin: 0;
+  font-size: 0.70rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.hud-modal__credits-text strong {
+  color: var(--text-secondary);
+}
+
+.hud-modal__credits-text a {
+  color: #93c5fd;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.hud-modal__credits-text a:hover {
+  color: #bfdbfe;
+}
+
 .hud-modal__close-btn {
   display: block;
   width: 100%;

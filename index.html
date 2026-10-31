@@ -18,12 +18,12 @@
     }
   </script>
 
-  <link rel="stylesheet" href="assets/css/styles.css?v=2.0">
+  <link rel="stylesheet" href="assets/css/styles.css?v=2.1">
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
-  <script src="assets/js/app.js?v=2.0" defer></script>
+  <script src="assets/js/app.js?v=2.1" defer></script>
 </head>
 <body>
 
@@ -37,7 +37,7 @@
     device-orientation-permission-ui="enabled: false">
 
     <a-assets timeout="10000">
-      <a-asset-item id="scouterModel" src="assets/models/scouter.glb"></a-asset-item>
+      <a-asset-item id="scouterDbzModel" src="assets/models/scouter_dbz.glb"></a-asset-item>
       <audio id="audioScan" src="assets/audio/scifi_scan.wav" preload="auto"></audio>
       <audio id="audioActivate" src="assets/audio/scifi_activate.wav" preload="auto"></audio>
       <audio id="audioTarget" src="assets/audio/scifi_target.wav" preload="auto"></audio>
@@ -61,15 +61,14 @@
 
     <!-- Anclaje al entrecejo / sien (índice 168) -->
     <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168" visible="false">
-      <a-entity id="visorContainer" position="0 0.02 0.08" visible="true">
+      <a-entity id="visorContainer" position="0.16 -0.22 -0.20" visible="true">
         <a-gltf-model
           id="visorModel"
           class="interactivo"
-          src="#scouterModel"
-          rotation="0 0 0"
+          src="#scouterDbzModel"
+          rotation="0 90 0"
           position="0 0 0"
-          scale="0.55 0.55 0.55"
-          animation-mixer="clip: *; loop: repeat">
+          scale="0.22 0.22 0.22">
         </a-gltf-model>
       </a-entity>
     </a-entity>
@@ -120,6 +119,12 @@
     <div class="hud-modal__qr-box">
       <img class="hud-modal__qr-img" src="assets/qr-github-pages.png" alt="Código QR para acceso móvil" width="130" height="130">
       <span class="hud-modal__qr-caption">Escanea con tu móvil para probar la experiencia en cámara frontal</span>
+    </div>
+
+    <div class="hud-modal__credits">
+      <p class="hud-modal__credits-text">
+        <strong>Modelo 3D:</strong> <a href="https://skfb.ly/oxGv8" target="_blank" rel="noopener noreferrer">"Scouter (Dragon Ball)"</a> por <em>Drawnah</em>, bajo licencia <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC Attribution (CC BY 4.0)</a>.
+      </p>
     </div>
 
     <button id="btnCloseModal" class="hud-modal__close-btn" type="button">Cerrar</button>
