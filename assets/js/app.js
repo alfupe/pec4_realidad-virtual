@@ -107,48 +107,30 @@ function initAudioController() {
   }
 }
 
-// Controlador del objeto primitivo 3D reactivo (Cubo de energía flotante)
+// Controlador del objeto primitivo 3D reactivo (Cubo rebotador estilo salvapantallas DVD)
 function initInteractiveCubeController() {
   const cube = document.getElementById('energyCube');
   if (!cube) return;
 
-  const colorPalette = ['#3b82f6', '#ec4899', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4'];
+  const colorPalette = ['#3b82f6', '#ec4899', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#eab308'];
   let currentColorIdx = 0;
   let isFastSpinning = false;
   let spinExtraDegrees = 0;
 
-  // Movimiento armónico continuo y suave por la escena (órbita / flotación 3D)
-  function orbitMotion(time) {
-    const t = time * 0.001; // segundos
+  // Parámetros de física de rebote en coordenadas de cámara (frustum)
+  // En z = -2.2m, calculamos dinámicamente los límites del viewport visible
+  let posX = 0.0;
+  let posY = 0.0;
+  const posZ = -2.2;
+  const cubeRadius = 0.14; // mitad del tamaño para colisión exacta con el borde
 
-    // Trayectoria orbital elíptica situada en el rango óptimo z: -2.0 a -2.6 m para evitar cortes de plano cercano
-    const posX = 0.55 + Math.cos(t * 0.7) * 0.40;
-    const posY = -0.10 + Math.sin(t * 1.1) * 0.25;
-    const posZ = -2.20 + Math.sin(t * 0.5) * 0.35;
+  // Velocidades en metros por segundo
+  let velX = 0.75;
+  let velY = 0.55;
+  let lastTime = performance.now();
 
-    cube.setAttribute('position', { x: posX, y: posY, z: posZ });
-
-    // Rotación suave continua de fondo + extra de rotación si se ha pulsado
-    if (!isFastSpinning) {
-      cube.setAttribute('rotation', {
-        x: (t * 25) % 360,
-        y: (t * 40 + spinExtraDegrees) % 360,
-        z: (t * 15) % 360
-      });
-    }
-
-    requestAnimationFrame(orbitMotion);
-  }
-  requestAnimationFrame(orbitMotion);
-
-  // Interacción táctil / clic: sonido, cambio de color y giro hiperrápido
-  cube.addEventListener('click', (e) => {
-    if (e && e.stopPropagation) e.stopPropagation();
-
-    // 1. Reproducir sonido Sci-Fi
-    triggerRandomSound();
-
-    // 2. Cambio cíclico de color PBR y emisivo
+  function triggerBounceEffect() {
+    // Al rebotar en un borde: cambia de color automáticamente
     currentColorIdx = (currentColorIdx + 1) % colorPalette.length;
     const newColor = colorPalette[currentColorIdx];
     cube.setAttribute('material', {
@@ -158,14 +140,92 @@ function initInteractiveCubeController() {
       emissive: newColor,
       emissiveIntensity: 0.55
     });
+  }
 
-    // 3. Giro acelerado instantáneo de 720 grados
+  // Bucle de animación física de rebote por los bordes de la pantalla
+  function bouncePhysics(time) {
+    const dt = Math.min((time - lastTime) * 0.001, 0.1); // delta time en segundos
+    lastTime = time;
+
+    // Calculamos los límites visibles del frustum en la profundidad posZ
+    const cameraEl = document.querySelector('a-camera');
+    let limitX = 0.95;
+    let limitY = 1.45;
+
+    if (cameraEl && cameraEl.components && cameraEl.components.camera) {
+      const threeCamera = cameraEl.components.camera.camera;
+      if (threeCamera && threeCamera.fov) {
+        // Altura visible a distancia |posZ|
+        const visibleHeight = 2 * Math.tan(THREE.MathUtils.degToRad(threeCamera.fov / 2)) * Math.abs(posZ);
+        const visibleWidth = visibleHeight * (threeCamera.aspect || (window.innerWidth / window.innerHeight));
+        limitX = (visibleWidth / 2) - cubeRadius;
+        limitY = (visibleHeight / 2) - cubeRadius;
+      }
+    }
+
+    // Actualizamos posición según velocidad
+    posX += velX * dt;
+    posY += velY * dt;
+
+    // Detección y rebote en bordes horizontales (izq / der)
+    if (posX >= limitX) {
+      posX = limitX;
+      velX = -Math.abs(velX);
+      triggerBounceEffect();
+    } else if (posX <= -limitX) {
+      posX = -limitX;
+      velX = Math.abs(velX);
+      triggerBounceEffect();
+    }
+
+    // Detección y rebote en bordes verticales (arriba / abajo)
+    if (posY >= limitY) {
+      posY = limitY;
+      velY = -Math.abs(velY);
+      triggerBounceEffect();
+    } else if (posY <= -limitY) {
+      posY = -limitY;
+      velY = Math.abs(velY);
+      triggerBounceEffect();
+    }
+
+    cube.setAttribute('position', { x: posX, y: posY, z: posZ });
+
+    // Rotación suave continua sobre sus propios ejes + extra de rotación si se ha pulsado
+    if (!isFastSpinning) {
+      const t = time * 0.001;
+      cube.setAttribute('rotation', {
+        x: (t * 35) % 360,
+        y: (t * 50 + spinExtraDegrees) % 360,
+        z: (t * 20) % 360
+      });
+    }
+
+    requestAnimationFrame(bouncePhysics);
+  }
+  requestAnimationFrame(bouncePhysics);
+
+  // Interacción táctil / clic: sonido, cambio de color y giro hiperrápido
+  cube.addEventListener('click', (e) => {
+    if (e && e.stopPropagation) e.stopPropagation();
+
+    // 1. Reproducir sonido Sci-Fi
+    triggerRandomSound();
+
+    // 2. Cambio manual de color PBR
+    triggerBounceEffect();
+
+    // 3. Impulso extra de velocidad aleatorio tras ser golpeado
+    velX = (velX > 0 ? 1 : -1) * (0.65 + Math.random() * 0.35);
+    velY = (velY > 0 ? 1 : -1) * (0.50 + Math.random() * 0.30);
+
+    // 4. Giro acelerado instantáneo de 720 grados
     if (isFastSpinning) return;
     isFastSpinning = true;
 
     const startRot = cube.getAttribute('rotation') || { x: 0, y: 0, z: 0 };
     const startTime = performance.now();
-    const duration = 750; // ms de giro ultrarrápido
+    const duration = 750; // ms
     const totalSpin = 720;
 
     function fastSpin(now) {
