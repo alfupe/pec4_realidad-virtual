@@ -1,6 +1,6 @@
 /**
- * PEC4: WebAR Face Tracking - Visor Táctico
- * Lógica de interacción, ciclo de vida AR y telemetría móvil
+ * PEC4: WebAR Face Tracking - Scouter Táctico y Objeto 3D Reactivo
+ * Lógica de interacción, ciclo de vida AR y control de objetos
  * Estudiante: Alejandro Fuentes Pérez (alfupe@uoc.edu)
  * Universitat Oberta de Catalunya (UOC) - Realidad Virtual
  */
@@ -20,31 +20,13 @@ const videoObserver = new MutationObserver((mutations) => {
         node.setAttribute('playsinline', '');
         node.setAttribute('webkit-playsinline', '');
         node.play().catch((err) => {
-          console.warn('WebAR: Autoplay automático de vídeo restringido:', err);
+          console.warn('WebAR: Autoplay de cámara restringido:', err);
         });
       }
     }
   }
 });
 videoObserver.observe(document.body, { childList: true });
-
-// Captura de errores globales para telemetría directa en pantalla en móviles
-window.addEventListener('error', (event) => {
-  console.error('WebAR Error Global:', event.error || event.message);
-  const audioTrackName = document.getElementById('audioTrackName');
-  if (audioTrackName && !isAudioPlaying) {
-    audioTrackName.textContent = 'Err: ' + (event.message || 'Script').substring(0, 24);
-  }
-});
-
-window.addEventListener('unhandledrejection', (event) => {
-  console.error('WebAR Rejection:', event.reason);
-  const audioTrackName = document.getElementById('audioTrackName');
-  if (audioTrackName && !isAudioPlaying) {
-    const msg = event.reason?.message || event.reason || 'Rechazo';
-    audioTrackName.textContent = 'Err AR: ' + String(msg).substring(0, 24);
-  }
-});
 
 // Actualiza el indicador inferior según el estado del sistema o del audio
 function updateStatusTicker(text) {
@@ -53,6 +35,9 @@ function updateStatusTicker(text) {
     audioTrackName.textContent = text;
   }
 }
+
+// Reproductor aleatorio de audio Sci-Fi expuesto globalmente
+let triggerRandomSound = () => {};
 
 // Controlador del banco de audio Sci-Fi
 function initAudioController() {
@@ -64,7 +49,7 @@ function initAudioController() {
 
   const btnPlaySound = document.getElementById('btnPlaySound');
   const audioTrackName = document.getElementById('audioTrackName');
-  const interactiveModel = document.querySelector('.interactivo');
+  const visorModel = document.getElementById('visorModel');
   let currentPlayingAudio = null;
   let lastAudioIndex = -1;
 
@@ -105,10 +90,13 @@ function initAudioController() {
     };
   }
 
+  // Asignamos la función para que otros componentes interactivos puedan invocarla
+  triggerRandomSound = playRandomSound;
+
   btnPlaySound.addEventListener('click', playRandomSound);
 
-  if (interactiveModel) {
-    interactiveModel.addEventListener('click', (e) => {
+  if (visorModel) {
+    visorModel.addEventListener('click', (e) => {
       const visorContainer = document.getElementById('visorContainer');
       const isVisible = visorContainer && visorContainer.getAttribute('visible');
       if (isVisible === false || isVisible === 'false') return;
@@ -119,7 +107,72 @@ function initAudioController() {
   }
 }
 
-// Controlador de visibilidad del visor 3D
+// Controlador del objeto primitivo 3D reactivo (Cubo de energía)
+function initInteractiveCubeController() {
+  const cube = document.getElementById('energyCube');
+  if (!cube) return;
+
+  const colorPalette = ['#3b82f6', '#ec4899', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'];
+  let currentColorIdx = 0;
+  let isSpinning = false;
+  let spinAnimationId = null;
+
+  cube.addEventListener('click', (e) => {
+    if (e && e.stopPropagation) e.stopPropagation();
+
+    // 1. Reproducir sonido Sci-Fi
+    triggerRandomSound();
+
+    // 2. Cambio cíclico de color PBR y emisivo
+    currentColorIdx = (currentColorIdx + 1) % colorPalette.length;
+    const newColor = colorPalette[currentColorIdx];
+    cube.setAttribute('material', {
+      color: newColor,
+      roughness: 0.25,
+      metalness: 0.75,
+      emissive: newColor,
+      emissiveIntensity: 0.45
+    });
+
+    // 3. Rotación rápida sobre sí mismo con aceleración
+    if (isSpinning) return;
+    isSpinning = true;
+
+    const startRot = cube.getAttribute('rotation') || { x: 15, y: 30, z: 0 };
+    const startTime = performance.now();
+    const duration = 800; // ms de giro rápido
+    const totalSpinDegrees = 720; // 2 vueltas completas
+
+    function animateSpin(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Easing cúbico hacia desaceleración
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+
+      cube.setAttribute('rotation', {
+        x: startRot.x + easeOut * 360,
+        y: startRot.y + easeOut * totalSpinDegrees,
+        z: startRot.z + easeOut * 180
+      });
+
+      if (progress < 1) {
+        spinAnimationId = requestAnimationFrame(animateSpin);
+      } else {
+        cube.setAttribute('rotation', {
+          x: startRot.x % 360,
+          y: (startRot.y + totalSpinDegrees) % 360,
+          z: startRot.z % 360
+        });
+        isSpinning = false;
+      }
+    }
+
+    cancelAnimationFrame(spinAnimationId);
+    spinAnimationId = requestAnimationFrame(animateSpin);
+  });
+}
+
+// Controlador de visibilidad del modelo Scouter
 function initVisorController() {
   const btnToggleVisor = document.getElementById('btnToggleVisor');
   const visorContainer = document.getElementById('visorContainer');
@@ -138,11 +191,11 @@ function initVisorController() {
 
     if (isVisorUserEnabled) {
       visorBtnIcon.textContent = '👁️';
-      visorBtnLabel.textContent = 'Ocultar Visor';
+      visorBtnLabel.textContent = 'Ocultar Scouter';
       btnToggleVisor.classList.remove('hud__btn--hidden');
     } else {
       visorBtnIcon.textContent = '🕶️';
-      visorBtnLabel.textContent = 'Mostrar Visor';
+      visorBtnLabel.textContent = 'Mostrar Scouter';
       btnToggleVisor.classList.add('hud__btn--hidden');
     }
   });
@@ -170,11 +223,11 @@ function initSceneLifecycleController() {
 
   if (visorModel) {
     visorModel.addEventListener('model-loaded', () => {
-      console.log('WebAR: Modelo 3D del visor cargado y listo en la escena');
+      console.log('WebAR: Scouter 3D cargado y listo en la escena');
     });
 
     visorModel.addEventListener('model-error', (err) => {
-      console.error('WebAR: Error al cargar el modelo 3D del visor', err);
+      console.error('WebAR: Error al cargar el modelo 3D del Scouter', err);
       updateStatusTicker('Error modelo 3D');
     });
   }
@@ -210,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.classList.add('is-android');
   }
   initAudioController();
+  initInteractiveCubeController();
   initVisorController();
   initModalController();
   initSceneLifecycleController();

@@ -18,12 +18,12 @@
     }
   </script>
 
-  <link rel="stylesheet" href="assets/css/styles.css?v=1.2">
+  <link rel="stylesheet" href="assets/css/styles.css?v=2.0">
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
-  <script src="assets/js/app.js?v=1.2" defer></script>
+  <script src="assets/js/app.js?v=2.0" defer></script>
 </head>
 <body>
 
@@ -37,7 +37,7 @@
     device-orientation-permission-ui="enabled: false">
 
     <a-assets timeout="10000">
-      <a-asset-item id="cyberVisorModel" src="assets/models/cyber_visor.glb"></a-asset-item>
+      <a-asset-item id="scouterModel" src="assets/models/scouter.glb"></a-asset-item>
       <audio id="audioScan" src="assets/audio/scifi_scan.wav" preload="auto"></audio>
       <audio id="audioActivate" src="assets/audio/scifi_activate.wav" preload="auto"></audio>
       <audio id="audioTarget" src="assets/audio/scifi_target.wav" preload="auto"></audio>
@@ -46,19 +46,29 @@
     <a-camera active="false" position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse" raycaster="far: 10000; objects: .interactivo"></a-camera>
 
     <!-- Luces para el sombreado del modelo -->
-    <a-light type="ambient" intensity="0.85"></a-light>
-    <a-light type="directional" position="0 2 3" intensity="1.2"></a-light>
+    <a-light type="ambient" intensity="0.9"></a-light>
+    <a-light type="directional" position="1 2 2" intensity="1.2"></a-light>
 
-    <!-- Anclaje al entrecejo (índice 168) -->
+    <!-- Cubo reactivo en el entorno espacial (interactivo al toque/clic) -->
+    <a-entity
+      id="energyCube"
+      class="interactivo"
+      geometry="primitive: box; width: 0.22; height: 0.22; depth: 0.22"
+      material="color: #3b82f6; roughness: 0.25; metalness: 0.75; emissive: #1d4ed8; emissiveIntensity: 0.35"
+      position="0.55 -0.35 -1.2"
+      rotation="15 30 0">
+    </a-entity>
+
+    <!-- Anclaje al entrecejo / sien (índice 168) -->
     <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168" visible="false">
-      <a-entity id="visorContainer" position="0 0.03 0.13" visible="true">
+      <a-entity id="visorContainer" position="0 0.02 0.08" visible="true">
         <a-gltf-model
           id="visorModel"
           class="interactivo"
-          src="#cyberVisorModel"
+          src="#scouterModel"
           rotation="0 0 0"
           position="0 0 0"
-          scale="0.52 0.52 0.52"
+          scale="0.55 0.55 0.55"
           animation-mixer="clip: *; loop: repeat">
         </a-gltf-model>
       </a-entity>
@@ -70,8 +80,7 @@
     <header class="hud__header">
       <div class="hud__card hud__card--info">
         <h1 class="hud__title">
-          <span>Visor Táctico AR</span>
-          <span class="hud__version-badge">v1.2</span>
+          <span>Scouter Táctico AR</span>
           <button id="btnInfoModal" class="hud__info-btn" type="button" title="Instrucciones" aria-label="Instrucciones">ℹ️</button>
         </h1>
         <p class="hud__author">Alejandro Fuentes Pérez · UOC Realidad Virtual</p>
@@ -91,7 +100,7 @@
 
         <button id="btnToggleVisor" class="hud__btn hud__btn--visor" type="button" aria-pressed="false">
           <span id="visorBtnIcon" class="hud__btn-icon">👁️</span>
-          <span id="visorBtnLabel" class="hud__btn-label">Ocultar Visor</span>
+          <span id="visorBtnLabel" class="hud__btn-label">Ocultar Scouter</span>
         </button>
       </div>
     </footer>
@@ -101,10 +110,11 @@
   <aside id="infoModal" class="hud-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <h2 id="modalTitle" class="hud-modal__title">Instrucciones de Uso</h2>
     <ul class="hud-modal__list">
-      <li class="hud-modal__item">Enfoca tu rostro hacia la cámara para calibrar el seguimiento facial automático.</li>
-      <li class="hud-modal__item">Pulsa en <strong>Sonido Aleatorio</strong> (o haz clic directamente en el visor) para reproducir efectos Sci-Fi.</li>
-      <li class="hud-modal__item">Usa el botón <strong>Ocultar/Mostrar Visor</strong> para alternar la visualización del modelo tridimensional.</li>
-      <li class="hud-modal__item">El modelo incluye animación continua en bucle del haz de escaneo frontal.</li>
+      <li class="hud-modal__item">Enfoca tu rostro hacia la cámara para calibrar el seguimiento facial del <strong>Scouter</strong>.</li>
+      <li class="hud-modal__item">Toca el <strong>cubo de energía holográfico</strong> en pantalla para hacerlo girar a gran velocidad, cambiar de color y emitir sonido.</li>
+      <li class="hud-modal__item">Pulsa en <strong>Sonido Aleatorio</strong> (o haz clic en el Scouter) para reproducir efectos Sci-Fi de rastreo.</li>
+      <li class="hud-modal__item">Usa el botón <strong>Ocultar/Mostrar Scouter</strong> para alternar la visualización del dispositivo.</li>
+      <li class="hud-modal__item">La lente incorpora animación continua de escaneo de unidades de combate.</li>
     </ul>
 
     <div class="hud-modal__qr-box">
