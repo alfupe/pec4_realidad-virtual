@@ -121,10 +121,10 @@ function initInteractiveCubeController() {
   function orbitMotion(time) {
     const t = time * 0.001; // segundos
 
-    // Trayectoria suave Lissajous / orbital alrededor del campo visual
-    const posX = 0.45 + Math.cos(t * 0.8) * 0.25;
-    const posY = -0.15 + Math.sin(t * 1.2) * 0.18;
-    const posZ = -0.95 + Math.sin(t * 0.6) * 0.15;
+    // Trayectoria orbital elíptica situada en el rango óptimo z: -2.0 a -2.6 m para evitar cortes de plano cercano
+    const posX = 0.55 + Math.cos(t * 0.7) * 0.40;
+    const posY = -0.10 + Math.sin(t * 1.1) * 0.25;
+    const posZ = -2.20 + Math.sin(t * 0.5) * 0.35;
 
     cube.setAttribute('position', { x: posX, y: posY, z: posZ });
 
@@ -239,6 +239,18 @@ function initSceneLifecycleController() {
   const sceneEl = document.querySelector('a-scene');
   const visorModel = document.getElementById('visorModel');
 
+  // Ajustar el plano de recorte cercano de la cámara a 0.05 para que nada se corte
+  function fixCameraNearPlane() {
+    const cameraEl = document.querySelector('a-camera');
+    if (cameraEl && cameraEl.components && cameraEl.components.camera) {
+      const threeCamera = cameraEl.components.camera.camera;
+      if (threeCamera && threeCamera.near !== 0.05) {
+        threeCamera.near = 0.05;
+        threeCamera.updateProjectionMatrix();
+      }
+    }
+  }
+
   if (visorModel) {
     visorModel.addEventListener('model-loaded', () => {
       console.log('WebAR: Scouter 3D cargado y listo en la escena');
@@ -255,6 +267,11 @@ function initSceneLifecycleController() {
   sceneEl.addEventListener('arReady', () => {
     console.log('WebAR: Sistema de visión artificial y tracking facial listos');
     updateStatusTicker('Buscando rostro...');
+    fixCameraNearPlane();
+  });
+
+  window.addEventListener('resize', () => {
+    setTimeout(fixCameraNearPlane, 200);
   });
 
   sceneEl.addEventListener('targetFound', () => {

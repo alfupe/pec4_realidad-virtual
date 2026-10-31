@@ -18,12 +18,12 @@
     }
   </script>
 
-  <link rel="stylesheet" href="assets/css/styles.css?v=2.2">
+  <link rel="stylesheet" href="assets/css/styles.css?v=2.3">
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
-  <script src="assets/js/app.js?v=2.2" defer></script>
+  <script src="assets/js/app.js?v=2.3" defer></script>
 </head>
 <body>
 
@@ -61,8 +61,8 @@
 
     <!-- Anclaje al entrecejo / sien (índice 168) -->
     <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168" visible="false">
-      <!-- Calibración fina: desplazado a la derecha (+X) y centrado sobre el ojo del usuario -->
-      <a-entity id="visorContainer" position="0.30 -0.21 -0.18" visible="true">
+      <!-- Calibración fina: desplazado más a la derecha (+X) y adelantado para cubrir el ojo izquierdo -->
+      <a-entity id="visorContainer" position="0.48 -0.20 -0.16" visible="true">
         <a-gltf-model
           id="visorModel"
           class="interactivo"
