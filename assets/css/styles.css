@@ -1,5 +1,4 @@
 :root {
-  /* Paleta moderna y sobria (estilo interfaz de cámara nativa / WebAR profesional) */
   --bg-glass: rgba(18, 20, 26, 0.65);
   --bg-glass-opaque: rgba(18, 20, 26, 0.94);
   --bg-glass-hover: rgba(255, 255, 255, 0.12);
@@ -254,9 +253,7 @@ a-scene {
   font-size: 0.82rem;
 }
 
-/* ==========================================================================
-   Modal Informativo (Diálogo Limpio Estilo iOS / macOS)
-   ========================================================================== */
+/* Modal */
 .hud-modal {
   display: none;
   position: fixed;
@@ -457,9 +454,7 @@ a-scene {
   }
 }
 
-/* ==========================================================================
-   Optimización de Renderizado para Android (Chromium WebGL Compositor)
-   ========================================================================== */
+/* Soporte Android */
 .is-android .hud__card,
 .is-android .hud__ticker,
 .is-android .hud__controls {

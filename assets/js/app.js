@@ -5,12 +5,12 @@
  * Universitat Oberta de Catalunya (UOC) - Realidad Virtual
  */
 
-// Estado global de la aplicación
+// Estado global
 let isVisorUserEnabled = true;
 let isAudioPlaying = false;
 let isFaceDetected = false;
 
-// Observador para garantizar el autoplay y atributos de cámara en dispositivos móviles (Android/iOS)
+// Configuración de atributos de vídeo para móviles
 const videoObserver = new MutationObserver((mutations) => {
   for (const mutation of mutations) {
     for (const node of mutation.addedNodes) {
@@ -19,16 +19,14 @@ const videoObserver = new MutationObserver((mutations) => {
         node.playsInline = true;
         node.setAttribute('playsinline', '');
         node.setAttribute('webkit-playsinline', '');
-        node.play().catch((err) => {
-          console.warn('WebAR: Autoplay de cámara restringido:', err);
-        });
+        node.play().catch(() => {});
       }
     }
   }
 });
 videoObserver.observe(document.body, { childList: true });
 
-// Actualiza el indicador inferior según el estado del sistema o del audio
+// Actualiza el texto de estado inferior
 function updateStatusTicker(text) {
   const audioTrackName = document.getElementById('audioTrackName');
   if (audioTrackName && !isAudioPlaying) {
@@ -36,10 +34,9 @@ function updateStatusTicker(text) {
   }
 }
 
-// Reproductor aleatorio de audio Sci-Fi expuesto globalmente
 let triggerRandomSound = () => {};
 
-// Controlador del banco de audio Sci-Fi
+// Control de audio
 function initAudioController() {
   const audioTracks = [
     { name: 'Escáner Táctico', el: document.getElementById('audioScan') },
@@ -107,7 +104,7 @@ function initAudioController() {
   }
 }
 
-// Controlador del objeto primitivo 3D reactivo (Cubo rebotador estilo salvapantallas DVD)
+// Animación y física del cubo interactivo
 function initInteractiveCubeController() {
   const cube = document.getElementById('energyCube');
   if (!cube) return;
@@ -117,20 +114,15 @@ function initInteractiveCubeController() {
   let isFastSpinning = false;
   let spinExtraDegrees = 0;
 
-  // Parámetros de física de rebote en coordenadas de cámara (frustum)
-  // En z = -2.2m, calculamos dinámicamente los límites del viewport visible
   let posX = 0.0;
   let posY = 0.0;
   const posZ = -2.2;
-  const cubeRadius = 0.14; // mitad del tamaño para colisión exacta con el borde
 
-  // Velocidades en metros por segundo
   let velX = 0.75;
   let velY = 0.55;
   let lastTime = performance.now();
 
   function triggerBounceEffect() {
-    // Al rebotar en un borde: cambia de color automáticamente
     currentColorIdx = (currentColorIdx + 1) % colorPalette.length;
     const newColor = colorPalette[currentColorIdx];
     cube.setAttribute('material', {
@@ -142,12 +134,11 @@ function initInteractiveCubeController() {
     });
   }
 
-  // Bucle de animación física de rebote por los bordes de la pantalla
+  // Rebote continuo en los bordes de la pantalla
   function bouncePhysics(time) {
-    const dt = Math.min((time - lastTime) * 0.001, 0.1); // delta time en segundos
+    const dt = Math.min((time - lastTime) * 0.001, 0.1);
     lastTime = time;
 
-    // Viewport visible real de la ventana / pantalla del dispositivo
     const winW = window.innerWidth || document.documentElement.clientWidth;
     const winH = window.innerHeight || document.documentElement.clientHeight;
     const screenAspect = winW / winH;
@@ -159,14 +150,10 @@ function initInteractiveCubeController() {
     if (cameraEl && cameraEl.components && cameraEl.components.camera) {
       const threeCamera = cameraEl.components.camera.camera;
       if (threeCamera && threeCamera.fov) {
-        // Cono de visión 3D total de la cámara a profundidad |posZ|
         const fullHeight3D = 2 * Math.tan(THREE.MathUtils.degToRad(threeCamera.fov / 2)) * Math.abs(posZ);
         const cameraAspect = threeCamera.aspect || screenAspect;
 
-        // MindAR ajusta el viewport de cámara con lógica 'object-fit: cover':
-        // En móviles verticales (portrait), cameraAspect > screenAspect: el alto encaja al 100%
-        // y el ancho de la escena 3D se desborda horizontalmente recortándose por los laterales.
-        // En pantallas horizontales o tablets ocurre lo inverso.
+        // Ajuste por compensación de recorte en móviles (object-fit: cover)
         if (cameraAspect >= screenAspect) {
           visibleHeight3D = fullHeight3D;
           visibleWidth3D = fullHeight3D * screenAspect;
@@ -177,17 +164,13 @@ function initInteractiveCubeController() {
       }
     }
 
-    // Margen de colisión del cubo (tamaño 0.28m; con rotación tridimensional
-    // el semidiámetro a aristas/caras es ~0.19m para un contacto visual perfecto con el marco)
     const cubeMargin = 0.19;
     const limitX = Math.max(0.15, (visibleWidth3D / 2) - cubeMargin);
     const limitY = Math.max(0.15, (visibleHeight3D / 2) - cubeMargin);
 
-    // Actualizamos posición según velocidad
     posX += velX * dt;
     posY += velY * dt;
 
-    // Detección y rebote exacto en bordes horizontales de pantalla (izq / der)
     if (posX >= limitX) {
       posX = limitX;
       velX = -Math.abs(velX);
@@ -198,7 +181,6 @@ function initInteractiveCubeController() {
       triggerBounceEffect();
     }
 
-    // Detección y rebote exacto en bordes verticales de pantalla (arriba / abajo)
     if (posY >= limitY) {
       posY = limitY;
       velY = -Math.abs(velY);
@@ -211,7 +193,6 @@ function initInteractiveCubeController() {
 
     cube.setAttribute('position', { x: posX, y: posY, z: posZ });
 
-    // Rotación suave continua sobre sus propios ejes + extra de rotación si se ha pulsado
     if (!isFastSpinning) {
       const t = time * 0.001;
       cube.setAttribute('rotation', {
@@ -225,27 +206,22 @@ function initInteractiveCubeController() {
   }
   requestAnimationFrame(bouncePhysics);
 
-  // Interacción táctil / clic: sonido, cambio de color y giro hiperrápido
+  // Interacción al tocar o hacer clic en el cubo
   cube.addEventListener('click', (e) => {
     if (e && e.stopPropagation) e.stopPropagation();
 
-    // 1. Reproducir sonido Sci-Fi
     triggerRandomSound();
-
-    // 2. Cambio manual de color PBR
     triggerBounceEffect();
 
-    // 3. Impulso extra de velocidad aleatorio tras ser golpeado
     velX = (velX > 0 ? 1 : -1) * (0.65 + Math.random() * 0.35);
     velY = (velY > 0 ? 1 : -1) * (0.50 + Math.random() * 0.30);
 
-    // 4. Giro acelerado instantáneo de 720 grados
     if (isFastSpinning) return;
     isFastSpinning = true;
 
     const startRot = cube.getAttribute('rotation') || { x: 0, y: 0, z: 0 };
     const startTime = performance.now();
-    const duration = 750; // ms
+    const duration = 750;
     const totalSpin = 720;
 
     function fastSpin(now) {
@@ -299,7 +275,7 @@ function initVisorController() {
   });
 }
 
-// Controlador de la ventana modal de información
+// Modal de instrucciones
 function initModalController() {
   const btnInfoModal = document.getElementById('btnInfoModal');
   const btnCloseModal = document.getElementById('btnCloseModal');
@@ -314,12 +290,12 @@ function initModalController() {
   });
 }
 
-// Controlador del ciclo de vida y eventos del sistema AR
+// Ciclo de vida y eventos de la escena AR
 function initSceneLifecycleController() {
   const sceneEl = document.querySelector('a-scene');
   const visorModel = document.getElementById('visorModel');
 
-  // Ajustar el plano de recorte cercano de la cámara a 0.05 para que nada se corte
+  // Ajuste del plano cercano para evitar cortes visuales
   function fixCameraNearPlane() {
     const cameraEl = document.querySelector('a-camera');
     if (cameraEl && cameraEl.components && cameraEl.components.camera) {
@@ -333,11 +309,11 @@ function initSceneLifecycleController() {
 
   if (visorModel) {
     visorModel.addEventListener('model-loaded', () => {
-      console.log('WebAR: Scouter 3D cargado y listo en la escena');
+      console.log('Scouter 3D cargado');
     });
 
     visorModel.addEventListener('model-error', (err) => {
-      console.error('WebAR: Error al cargar el modelo 3D del Scouter', err);
+      console.error('Error al cargar el modelo 3D', err);
       updateStatusTicker('Error modelo 3D');
     });
   }
@@ -345,7 +321,7 @@ function initSceneLifecycleController() {
   if (!sceneEl) return;
 
   sceneEl.addEventListener('arReady', () => {
-    console.log('WebAR: Sistema de visión artificial y tracking facial listos');
+    console.log('Tracking facial listo');
     updateStatusTicker('Buscando rostro...');
     fixCameraNearPlane();
   });
@@ -355,24 +331,22 @@ function initSceneLifecycleController() {
   });
 
   sceneEl.addEventListener('targetFound', () => {
-    console.log('WebAR: Rostro detectado con éxito');
     isFaceDetected = true;
     updateStatusTicker('Rostro detectado');
   });
 
   sceneEl.addEventListener('targetLost', () => {
-    console.log('WebAR: Rostro fuera de encuadre');
     isFaceDetected = false;
     updateStatusTicker('Buscando rostro...');
   });
 
   sceneEl.addEventListener('arError', (event) => {
-    console.warn('WebAR: Error de inicialización de cámara o soporte', event.detail);
+    console.warn('Error de cámara o permisos:', event.detail);
     updateStatusTicker('Cámara no accesible');
   });
 }
 
-// Inicialización de controladores al cargar el DOM
+// Inicialización
 document.addEventListener('DOMContentLoaded', () => {
   if (/Android/i.test(navigator.userAgent)) {
     document.documentElement.classList.add('is-android');
