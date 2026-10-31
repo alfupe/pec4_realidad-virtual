@@ -11,15 +11,16 @@
 
 Esta práctica corresponde a la **PEC 4** de la asignatura de *Realidad Virtual*. En cumplimiento de las directrices docentes del aula (sustituyendo el entorno propietario de Lens Studio por estándares web abiertos), se ha desarrollado una experiencia completa de **Realidad Aumentada Web (WebAR)** basada en detección y seguimiento facial (**Face Tracking**) en tiempo real sobre el feed de la cámara del usuario.
 
-La experiencia implementa un **Visor Táctico Cyberpunk** tridimensional y animado, integrado con una interfaz superpuesta (DOM Overlay HUD) reactiva, control de visibilidad del modelo 3D y un banco de efectos sonoros de ciencia ficción con corte dinámico de reproducción.
+La experiencia implementa un **Scouter Táctico** tridimensional y animado (inspirado en los dispositivos de medición de energía de combate de Dragon Ball), integrado con una interfaz superpuesta (DOM Overlay HUD) reactiva, control de visibilidad del modelo 3D, un **cubo holográfico interactivo** en el entorno espacial y un banco de efectos sonoros de ciencia ficción con corte dinámico de reproducción.
 
 ### Características e Interactividad de la Aplicación
 
-1. **Seguimiento Facial en Tiempo Real:** Anclaje preciso en el entrecejo / puente nasal (`anchorIndex: 168`) con 6 grados de libertad relativos a la orientación de la cabeza.
-2. **Visor 3D Animado:** Modelo low-poly con materiales PBR de cristal traslúcido y haz holográfico frontal que oscila en bucle continuo mediante el componente `animation-mixer`.
-3. **Banco de Efectos de Sonido Sci-Fi:** Control de audio aleatorio con **corte inmediato** del sonido previo para evitar solapamientos acústicos.
-4. **Control de Visibilidad 3D:** Botón táctil para conmutar la visibilidad del visor en pantalla.
-5. **Interactividad Aditiva por Clic Directo:** Posibilidad de interactuar tocando o haciendo clic directamente sobre el visor 3D en pantalla mediante raycaster de A-Frame (`.interactivo`).
+1. **Seguimiento Facial en Tiempo Real:** Anclaje preciso en el entrecejo / sien (`anchorIndex: 168`) con 6 grados de libertad relativos a la orientación de la cabeza.
+2. **Scouter 3D Animado:** Modelo estilizado con auricular ergonómico lateral, montura y lente monocromática verde traslúcida con retícula HUD y animación en bucle del haz de medición de combate mediante el componente `animation-mixer`.
+3. **Objeto Primitivo 3D Reactivo (Cubo de Energía):** Cubo holográfico suspendido en el espacio AR que reacciona tanto al clic como al toque táctil del usuario: rota rápidamente 720° con aceleración/frenado suave (*ease-out*), muta cíclicamente su color PBR emisivo y dispara efectos de sonido.
+4. **Banco de Efectos de Sonido Sci-Fi:** Control de audio aleatorio con **corte inmediato** del sonido previo para evitar solapamientos acústicos.
+5. **Control de Visibilidad 3D:** Botón táctil para conmutar la visibilidad del Scouter en pantalla.
+6. **Interactividad Aditiva por Clic Directo:** Posibilidad de interactuar tocando o haciendo clic directamente sobre el Scouter o el cubo interactivo en pantalla mediante raycaster de A-Frame (`.interactivo`).
 
 ### Enlace al Despliegue en GitHub Pages (HTTPS)
 
