@@ -85,7 +85,6 @@ Abrir en el navegador: `http://localhost:8080`
 | Recurso | Archivo | Autor / Fuente | Licencia | Enlace |
 | :--- | :--- | :--- | :---: | :--- |
 | **Modelo 3D Scouter** | `assets/models/scouter_dbz.glb` | Drawnah | **CC BY 4.0** | ["Scouter (Dragon Ball)"](https://skfb.ly/oxGv8) en Sketchfab |
-| **Cubo 3D reactivo** | Primitiva A-Frame (`<a-entity>`) | Alejandro Fuentes Pérez | **CC0 (Dominio Público)** | Generación procedural en Three.js |
 | **Audio 1: Escáner** | `assets/audio/scifi_scan.wav` | Alejandro Fuentes Pérez | **CC0 (Dominio Público)** | Diseño sonoro sintético 44.1 kHz |
 | **Audio 2: Activación** | `assets/audio/scifi_activate.wav` | Alejandro Fuentes Pérez | **CC0 (Dominio Público)** | Diseño sonoro sintético 44.1 kHz |
 | **Audio 3: Fijación** | `assets/audio/scifi_target.wav` | Alejandro Fuentes Pérez | **CC0 (Dominio Público)** | Diseño sonoro sintético 44.1 kHz |
@@ -103,17 +102,22 @@ Siguiendo las directrices de la UOC sobre el uso de herramientas de Inteligencia
 Asistente de IA (Gemini / Antigravity).
 
 ### Objetivos perseguidos
-* Asistencia en el cálculo trigonométrico para determinar el volumen visible de la cámara (*frustum*) y la compensación de aspect ratio (`object-fit: cover` de MindAR) para que el cubo 3D detecte los límites de la pantalla y rebote limpiamente en los bordes.
-* Apoyo en la resolución de problemas de renderizado: corrección del plano de recorte cercano (`camera.near = 0.05`) para evitar cortes visuales en los modelos 3D cerca de la cámara.
-* Búsqueda de alternativas libres al visor inicial y redacción normalizada de los créditos y licencias Creative Commons.
-* Asistencia en la compatibilidad cross-browser para dispositivos móviles (desbloqueo de audio y reproducción de vídeo en Android/iOS).
+* **Búsqueda de recursos multimedia:** Localización en Sketchfab de modelos 3D alternativos con licencia Creative Commons (Scouter de Dragon Ball de Drawnah) y efectos de sonido Sci-Fi de dominio público.
+* **Generación de recursos gráficos:** Creación del código QR en formato PNG optimizado para el acceso directo a la versión desplegada en GitHub Pages desde el móvil.
+* **Configuración del entorno de desarrollo local:** Puesta en marcha de un servidor HTTPS local con certificados SSL autofirmados para permitir el acceso a la cámara mediante WebRTC en dispositivos móviles conectados a la red local y calibrar el visor en tiempo real.
+* **Cálculo matemático de la escena 3D:** Asistencia en la trigonometría del frustum de cámara y la compensación de aspect ratio (`object-fit: cover` de MindAR) para que el cubo 3D detecte y rebote en los cuatro bordes visibles de la pantalla, así como el ajuste del plano de corte cercano (`camera.near = 0.05`).
+* **Documentación técnica:** Apoyo en la estructuración, normalización de créditos de autoría y redacción de este documento (`README.md`).
 
 ### Prompts representativos
-> «¿Cómo calculamos los límites visibles del frustum en Three.js teniendo en cuenta que MindAR recorta horizontalmente el canvas en móviles verticales para que un objeto rebote en los cuatro bordes de la pantalla?»
+> «Ayúdame a buscar en Sketchfab un modelo 3D optimizado de un Scouter de Dragon Ball con licencia Creative Commons para sustituir las gafas actuales.»
 
-> «En móviles el modelo y el cubo se cortan diagonalmente al acercarse; revisa la configuración del plano de recorte cercano (`near plane`) de la cámara en A-Frame.»
+> «Genera un código QR que enlace a https://alfupe.github.io/pec4_realidad-virtual/ para integrarlo en la interfaz y en el README.»
 
-> «Redacta el bloque de atribución de licencia CC BY 4.0 para el modelo Scouter de Drawnah de Sketchfab de acuerdo con las pautas académicas.»
+> «Monta un servidor local HTTPS rápido con Python y certificados SSL para probar la cámara y calibrar el visor directamente en mi móvil en red local.»
+
+> «¿Cómo calculamos los límites visibles del frustum en Three.js teniendo en cuenta que MindAR recorta horizontalmente el canvas en móviles para que un objeto rebote en los cuatro bordes de la pantalla?»
+
+> «Estructura y redacta el README.md de la práctica de forma concisa y sin verborrea.»
 
 ### Respuestas obtenidas y proceso de revisión
-La herramienta ofreció fórmulas de proyección de cámara y sugerencias de implementación en JavaScript. Todos los cálculos, la calibración espacial del visor sobre el ojo izquierdo, la integración en la interfaz y las pruebas empíricas en múltiples dispositivos reales han sido revisados, modificados, evaluados y validados por el estudiante.
+La herramienta ofreció enlaces y sugerencias de búsqueda, generó el código QR y el script de servidor local HTTPS, facilitó cálculos trigonométricos para A-Frame y Three.js, y ayudó en la redacción técnica. La selección final del modelo, su calibración anatómica sobre el rostro, la validación acústica, la comprobación en navegadores y dispositivos reales (escritorio, iOS y Android) y el resultado definitivo han sido revisados, evaluados y asumidos íntegramente por el estudiante.
