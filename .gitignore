@@ -18,5 +18,10 @@ Icon
 *.zip
 *.tar.gz
 
+# Local dev HTTPS certs and scripts
+server.crt
+server.key
+https_server.py
+
 # Logs
 *.log
