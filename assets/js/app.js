@@ -107,16 +107,41 @@ function initAudioController() {
   }
 }
 
-// Controlador del objeto primitivo 3D reactivo (Cubo de energía)
+// Controlador del objeto primitivo 3D reactivo (Cubo de energía flotante)
 function initInteractiveCubeController() {
   const cube = document.getElementById('energyCube');
   if (!cube) return;
 
-  const colorPalette = ['#3b82f6', '#ec4899', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'];
+  const colorPalette = ['#3b82f6', '#ec4899', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4'];
   let currentColorIdx = 0;
-  let isSpinning = false;
-  let spinAnimationId = null;
+  let isFastSpinning = false;
+  let spinExtraDegrees = 0;
 
+  // Movimiento armónico continuo y suave por la escena (órbita / flotación 3D)
+  function orbitMotion(time) {
+    const t = time * 0.001; // segundos
+
+    // Trayectoria suave Lissajous / orbital alrededor del campo visual
+    const posX = 0.45 + Math.cos(t * 0.8) * 0.25;
+    const posY = -0.15 + Math.sin(t * 1.2) * 0.18;
+    const posZ = -0.95 + Math.sin(t * 0.6) * 0.15;
+
+    cube.setAttribute('position', { x: posX, y: posY, z: posZ });
+
+    // Rotación suave continua de fondo + extra de rotación si se ha pulsado
+    if (!isFastSpinning) {
+      cube.setAttribute('rotation', {
+        x: (t * 25) % 360,
+        y: (t * 40 + spinExtraDegrees) % 360,
+        z: (t * 15) % 360
+      });
+    }
+
+    requestAnimationFrame(orbitMotion);
+  }
+  requestAnimationFrame(orbitMotion);
+
+  // Interacción táctil / clic: sonido, cambio de color y giro hiperrápido
   cube.addEventListener('click', (e) => {
     if (e && e.stopPropagation) e.stopPropagation();
 
@@ -128,47 +153,40 @@ function initInteractiveCubeController() {
     const newColor = colorPalette[currentColorIdx];
     cube.setAttribute('material', {
       color: newColor,
-      roughness: 0.25,
-      metalness: 0.75,
+      roughness: 0.2,
+      metalness: 0.8,
       emissive: newColor,
-      emissiveIntensity: 0.45
+      emissiveIntensity: 0.55
     });
 
-    // 3. Rotación rápida sobre sí mismo con aceleración
-    if (isSpinning) return;
-    isSpinning = true;
+    // 3. Giro acelerado instantáneo de 720 grados
+    if (isFastSpinning) return;
+    isFastSpinning = true;
 
-    const startRot = cube.getAttribute('rotation') || { x: 15, y: 30, z: 0 };
+    const startRot = cube.getAttribute('rotation') || { x: 0, y: 0, z: 0 };
     const startTime = performance.now();
-    const duration = 800; // ms de giro rápido
-    const totalSpinDegrees = 720; // 2 vueltas completas
+    const duration = 750; // ms de giro ultrarrápido
+    const totalSpin = 720;
 
-    function animateSpin(currentTime) {
-      const elapsed = currentTime - startTime;
+    function fastSpin(now) {
+      const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // Easing cúbico hacia desaceleración
       const easeOut = 1 - Math.pow(1 - progress, 3);
 
       cube.setAttribute('rotation', {
         x: startRot.x + easeOut * 360,
-        y: startRot.y + easeOut * totalSpinDegrees,
+        y: startRot.y + easeOut * totalSpin,
         z: startRot.z + easeOut * 180
       });
 
       if (progress < 1) {
-        spinAnimationId = requestAnimationFrame(animateSpin);
+        requestAnimationFrame(fastSpin);
       } else {
-        cube.setAttribute('rotation', {
-          x: startRot.x % 360,
-          y: (startRot.y + totalSpinDegrees) % 360,
-          z: startRot.z % 360
-        });
-        isSpinning = false;
+        spinExtraDegrees += totalSpin;
+        isFastSpinning = false;
       }
     }
-
-    cancelAnimationFrame(spinAnimationId);
-    spinAnimationId = requestAnimationFrame(animateSpin);
+    requestAnimationFrame(fastSpin);
   });
 }
 

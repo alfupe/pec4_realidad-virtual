@@ -18,12 +18,12 @@
     }
   </script>
 
-  <link rel="stylesheet" href="assets/css/styles.css?v=2.1">
+  <link rel="stylesheet" href="assets/css/styles.css?v=2.2">
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
-  <script src="assets/js/app.js?v=2.1" defer></script>
+  <script src="assets/js/app.js?v=2.2" defer></script>
 </head>
 <body>
 
@@ -49,26 +49,27 @@
     <a-light type="ambient" intensity="0.9"></a-light>
     <a-light type="directional" position="1 2 2" intensity="1.2"></a-light>
 
-    <!-- Cubo reactivo en el entorno espacial (interactivo al toque/clic) -->
+    <!-- Cubo reactivo flotante en órbita continua por la escena -->
     <a-entity
       id="energyCube"
       class="interactivo"
-      geometry="primitive: box; width: 0.22; height: 0.22; depth: 0.22"
-      material="color: #3b82f6; roughness: 0.25; metalness: 0.75; emissive: #1d4ed8; emissiveIntensity: 0.35"
-      position="0.55 -0.35 -1.2"
+      geometry="primitive: box; width: 0.18; height: 0.18; depth: 0.18"
+      material="color: #3b82f6; roughness: 0.2; metalness: 0.8; emissive: #1d4ed8; emissiveIntensity: 0.5"
+      position="0.45 -0.15 -0.9"
       rotation="15 30 0">
     </a-entity>
 
     <!-- Anclaje al entrecejo / sien (índice 168) -->
     <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168" visible="false">
-      <a-entity id="visorContainer" position="0.16 -0.22 -0.20" visible="true">
+      <!-- Calibración fina: desplazado a la derecha (+X) y centrado sobre el ojo del usuario -->
+      <a-entity id="visorContainer" position="0.30 -0.21 -0.18" visible="true">
         <a-gltf-model
           id="visorModel"
           class="interactivo"
           src="#scouterDbzModel"
           rotation="0 90 0"
           position="0 0 0"
-          scale="0.22 0.22 0.22">
+          scale="0.21 0.21 0.21">
         </a-gltf-model>
       </a-entity>
     </a-entity>
