@@ -121,11 +121,13 @@ function initInteractiveCubeController() {
   let lastTime = performance.now();
 
   function triggerBounceEffect() {
-    // Destello de energía Ki al rebotar o ser golpeada
+    // Destello de energía Ki al rebotar o ser golpeada (manteniendo translucidez)
     ball.setAttribute('material', {
       src: '#dragonBallTex',
-      roughness: 0.12,
-      metalness: 0.15,
+      transparent: true,
+      opacity: 0.82,
+      roughness: 0.08,
+      metalness: 0.12,
       emissive: '#ffaa00',
       emissiveIntensity: 0.95
     });
@@ -164,8 +166,8 @@ function initInteractiveCubeController() {
       }
     }
 
-    // Radio de la esfera (0.16m) para contacto exacto en los 4 bordes
-    const ballMargin = 0.16;
+    // Radio de la esfera (0.11m) para contacto exacto en los 4 bordes
+    const ballMargin = 0.11;
     const limitX = Math.max(0.15, (visibleWidth3D / 2) - ballMargin);
     const limitY = Math.max(0.15, (visibleHeight3D / 2) - ballMargin);
 
