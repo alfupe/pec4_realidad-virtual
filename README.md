@@ -24,21 +24,24 @@ Esta práctica implementa una experiencia de Realidad Aumentada web (WebAR) de s
 
 ### Requisitos del enunciado implementados
 
-1. **Objeto 3D anclado al rostro (Scouter):**
+1. **Objeto 3D anclado al rostro (Scouter Saiyan):**
    - Se utiliza un modelo 3D de un *Scouter* (visor de Dragon Ball) anclado al entrecejo mediante el punto de referencia anatómico 168 de la malla facial, calibrado con precisión sobre el ojo izquierdo.
    - Dispone de un botón en la interfaz para **mostrar u ocultar** el visor en cualquier momento.
 
-2. **Reproducción de sonidos aleatorios:**
-   - Botón interactivo que reproduce pistas de forma aleatoria desde un banco de 3 efectos sonoros Sci-Fi.
+2. **Reproducción de sonidos aleatorios (Dragon Ball):**
+   - Botón interactivo que reproduce pistas de forma aleatoria desde un banco de 3 efectos sonoros icónicos de Dragon Ball:
+     * *Escáner Scouter (Medición de Ki)*
+     * *Teletransporte (Shunkan Ido / Carga de Ki)*
+     * *Radar Dragón (Detección de Esfera)*
    - Si se pulsa mientras suena una pista, se detiene inmediatamente antes de iniciar la siguiente, evitando solapamientos acústicos.
 
-3. **Objeto 3D adicional reactivo (Cubo de energía):**
+3. **Objeto 3D adicional reactivo (Bola de Dragón de 4 estrellas):**
    - Se incorpora un elemento 3D adicional que se desplaza y **rebota por los bordes de la pantalla** calculando dinámicamente los límites del frustum de la cámara.
-   - Cambia de color automáticamente con cada rebote.
-   - Al tocarlo o hacer clic sobre él, emite sonido, cambia de color y rota sobre sí mismo 720° con aceleración.
+   - Diseñado como la mítica esfera de cuatro estrellas de Goku, emite un destello de energía Ki dorado al rebotar contra los bordes.
+   - Al tocarlo o hacer clic sobre él, emite sonido temático, un pulso de luz Ki y rota sobre sí mismo 720° con aceleración.
 
-4. **Interfaz y compatibilidad móvil:**
-   - Interfaz HUD superior e inferior adaptada a pantallas táctiles y móviles (Android / iOS) con manejo de márgenes seguros (*safe-area-inset*).
+4. **Interfaz temática Dragon Ball y compatibilidad móvil:**
+   - Interfaz HUD superior e inferior con estética Dragon Ball / Capsule Corp (tonos ámbar, naranja y azul Saiyan) adaptada a pantallas táctiles y móviles (Android / iOS) con manejo de márgenes seguros (*safe-area-inset*).
 
 ---
 
@@ -51,15 +54,17 @@ PEC4_Fuentes_Alejandro/
 ├── PEC4_Fuentes_Alejandro.txt # Enlaces de entrega
 └── assets/
     ├── css/
-    │   └── styles.css       # Estilos de la interfaz
+    │   └── styles.css       # Estilos de la interfaz temática DBZ
     ├── js/
-    │   └── app.js          # Lógica de tracking, audio y física del cubo
+    │   └── app.js          # Lógica de tracking, audio y física de la esfera
     ├── models/
     │   └── scouter_dbz.glb  # Modelo 3D del Scouter (Drawnah, CC BY 4.0)
+    ├── textures/
+    │   └── dragon_ball_4star.png # Textura procedural de la esfera de 4 estrellas
     ├── audio/
-    │   ├── scifi_scan.wav   # Efecto 1: Escaneo
-    │   ├── scifi_activate.wav # Efecto 2: Activación
-    │   └── scifi_target.wav # Efecto 3: Fijación
+    │   ├── scifi_scan.wav   # Efecto 1: Escáner Scouter (Ki)
+    │   ├── scifi_activate.wav # Efecto 2: Teletransporte (Shunkan Ido)
+    │   └── scifi_target.wav # Efecto 3: Radar Dragón
     └── qr-github-pages.png  # Código QR de acceso
 ```
 
@@ -85,9 +90,10 @@ Abrir en el navegador: `http://localhost:8080`
 | Recurso | Archivo | Autor / Fuente | Licencia | Enlace |
 | :--- | :--- | :--- | :---: | :--- |
 | **Modelo 3D Scouter** | `assets/models/scouter_dbz.glb` | Drawnah | **CC BY 4.0** | ["Scouter (Dragon Ball)"](https://skfb.ly/oxGv8) en Sketchfab |
-| **Audio 1: Escáner** | `assets/audio/scifi_scan.wav` | Alejandro Fuentes Pérez | **CC0 (Dominio Público)** | Diseño sonoro sintético 44.1 kHz |
-| **Audio 2: Activación** | `assets/audio/scifi_activate.wav` | Alejandro Fuentes Pérez | **CC0 (Dominio Público)** | Diseño sonoro sintético 44.1 kHz |
-| **Audio 3: Fijación** | `assets/audio/scifi_target.wav` | Alejandro Fuentes Pérez | **CC0 (Dominio Público)** | Diseño sonoro sintético 44.1 kHz |
+| **Textura Bola de Dragón (4★)** | `assets/textures/dragon_ball_4star.png` | Alejandro Fuentes Pérez | **CC0 (Dominio Público)** | Generación procedural equirrectangular |
+| **Audio 1: Escáner Scouter** | `assets/audio/scifi_scan.wav` | Alejandro Fuentes Pérez | **CC0 (Dominio Público)** | Diseño sonoro sintético 44.1 kHz |
+| **Audio 2: Teletransporte** | `assets/audio/scifi_activate.wav` | Alejandro Fuentes Pérez | **CC0 (Dominio Público)** | Diseño sonoro sintético 44.1 kHz |
+| **Audio 3: Radar Dragón** | `assets/audio/scifi_target.wav` | Alejandro Fuentes Pérez | **CC0 (Dominio Público)** | Diseño sonoro sintético 44.1 kHz |
 
 > **Atribución CC BY 4.0:**  
 > *"Scouter (Dragon Ball)" (https://skfb.ly/oxGv8) by Drawnah is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).*

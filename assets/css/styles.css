@@ -1,22 +1,28 @@
 :root {
-  --bg-glass: rgba(18, 20, 26, 0.65);
-  --bg-glass-opaque: rgba(18, 20, 26, 0.94);
-  --bg-glass-hover: rgba(255, 255, 255, 0.12);
-  --bg-glass-active: rgba(255, 255, 255, 0.2);
-  --border-glass: rgba(255, 255, 255, 0.14);
-  --border-glass-focus: rgba(255, 255, 255, 0.35);
+  --bg-glass: rgba(16, 18, 24, 0.76);
+  --bg-glass-opaque: rgba(16, 18, 24, 0.96);
+  --bg-glass-hover: rgba(255, 120, 0, 0.16);
+  --bg-glass-active: rgba(255, 120, 0, 0.28);
+  --border-glass: rgba(255, 136, 0, 0.28);
+  --border-glass-focus: rgba(255, 179, 0, 0.6);
   
   --text-main: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.75);
-  --text-muted: rgba(255, 255, 255, 0.5);
-  --accent-blue: #3b82f6;
+  --text-secondary: rgba(255, 255, 255, 0.85);
+  --text-muted: rgba(255, 255, 255, 0.55);
+  
+  /* Paleta temática Dragon Ball */
+  --dbz-orange: #ff6b00;
+  --dbz-amber: #ffb300;
+  --dbz-red: #e53935;
+  --dbz-blue: #1e88e5;
+  --dbz-scouter-green: #00e676;
 
   --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-pill: 9999px;
   --blur-glass: blur(20px);
-  --shadow-dock: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --shadow-dock: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 16px rgba(255, 107, 0, 0.15);
   --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -114,7 +120,23 @@ a-scene {
   color: var(--text-main);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+}
+
+/* Badge distintivo de la Esfera de 4 estrellas */
+.hud__badge-dbz {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff9800, #e65100);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.45);
+  letter-spacing: 0.04em;
+  border: 1px solid rgba(255, 235, 59, 0.4);
 }
 
 .hud__author {
@@ -177,8 +199,9 @@ a-scene {
 }
 
 .hud__ticker-track {
-  color: var(--text-main);
+  color: var(--dbz-amber);
   font-weight: 600;
+  text-shadow: 0 0 8px rgba(255, 179, 0, 0.35);
 }
 
 /* Contenedor tipo "Dock" para la botonera */
@@ -231,11 +254,12 @@ a-scene {
   background: var(--bg-glass-active);
 }
 
-/* Estado mientras se reproduce un sonido */
+/* Estado mientras se reproduce un sonido (destello de Ki) */
 .hud__btn--playing {
-  background: rgba(59, 130, 246, 0.18) !important;
-  border-color: rgba(59, 130, 246, 0.45) !important;
-  color: #93c5fd;
+  background: rgba(255, 107, 0, 0.22) !important;
+  border-color: rgba(255, 179, 0, 0.65) !important;
+  color: #ffe082 !important;
+  box-shadow: 0 0 14px rgba(255, 107, 0, 0.35);
 }
 
 /* Estado cuando el visor 3D está oculto */

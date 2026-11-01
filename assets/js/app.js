@@ -36,12 +36,12 @@ function updateStatusTicker(text) {
 
 let triggerRandomSound = () => {};
 
-// Control de audio
+// Control de audio Dragon Ball
 function initAudioController() {
   const audioTracks = [
-    { name: 'Escáner Táctico', el: document.getElementById('audioScan') },
-    { name: 'Activación HUD', el: document.getElementById('audioActivate') },
-    { name: 'Fijación de Objetivo', el: document.getElementById('audioTarget') }
+    { name: 'Escáner Scouter (Ki)', el: document.getElementById('audioScan') },
+    { name: 'Teletransporte (Shunkan Ido)', el: document.getElementById('audioActivate') },
+    { name: 'Radar Dragón', el: document.getElementById('audioTarget') }
   ];
 
   const btnPlaySound = document.getElementById('btnPlaySound');
@@ -104,13 +104,11 @@ function initAudioController() {
   }
 }
 
-// Animación y física del cubo interactivo
+// Animación y física de la Bola de Dragón interactiva (4 estrellas)
 function initInteractiveCubeController() {
-  const cube = document.getElementById('energyCube');
-  if (!cube) return;
+  const ball = document.getElementById('energyBall') || document.getElementById('energyCube');
+  if (!ball) return;
 
-  const colorPalette = ['#3b82f6', '#ec4899', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#eab308'];
-  let currentColorIdx = 0;
   let isFastSpinning = false;
   let spinExtraDegrees = 0;
 
@@ -123,15 +121,17 @@ function initInteractiveCubeController() {
   let lastTime = performance.now();
 
   function triggerBounceEffect() {
-    currentColorIdx = (currentColorIdx + 1) % colorPalette.length;
-    const newColor = colorPalette[currentColorIdx];
-    cube.setAttribute('material', {
-      color: newColor,
-      roughness: 0.2,
-      metalness: 0.8,
-      emissive: newColor,
-      emissiveIntensity: 0.55
+    // Destello de energía Ki al rebotar o ser golpeada
+    ball.setAttribute('material', {
+      src: '#dragonBallTex',
+      roughness: 0.12,
+      metalness: 0.15,
+      emissive: '#ffaa00',
+      emissiveIntensity: 0.95
     });
+    setTimeout(() => {
+      ball.setAttribute('material', 'emissiveIntensity', 0.25);
+    }, 280);
   }
 
   // Rebote continuo en los bordes de la pantalla
@@ -164,9 +164,10 @@ function initInteractiveCubeController() {
       }
     }
 
-    const cubeMargin = 0.19;
-    const limitX = Math.max(0.15, (visibleWidth3D / 2) - cubeMargin);
-    const limitY = Math.max(0.15, (visibleHeight3D / 2) - cubeMargin);
+    // Radio de la esfera (0.16m) para contacto exacto en los 4 bordes
+    const ballMargin = 0.16;
+    const limitX = Math.max(0.15, (visibleWidth3D / 2) - ballMargin);
+    const limitY = Math.max(0.15, (visibleHeight3D / 2) - ballMargin);
 
     posX += velX * dt;
     posY += velY * dt;
@@ -191,11 +192,11 @@ function initInteractiveCubeController() {
       triggerBounceEffect();
     }
 
-    cube.setAttribute('position', { x: posX, y: posY, z: posZ });
+    ball.setAttribute('position', { x: posX, y: posY, z: posZ });
 
     if (!isFastSpinning) {
       const t = time * 0.001;
-      cube.setAttribute('rotation', {
+      ball.setAttribute('rotation', {
         x: (t * 35) % 360,
         y: (t * 50 + spinExtraDegrees) % 360,
         z: (t * 20) % 360
@@ -206,8 +207,8 @@ function initInteractiveCubeController() {
   }
   requestAnimationFrame(bouncePhysics);
 
-  // Interacción al tocar o hacer clic en el cubo
-  cube.addEventListener('click', (e) => {
+  // Interacción al tocar o hacer clic en la bola de dragón
+  ball.addEventListener('click', (e) => {
     if (e && e.stopPropagation) e.stopPropagation();
 
     triggerRandomSound();
@@ -219,7 +220,7 @@ function initInteractiveCubeController() {
     if (isFastSpinning) return;
     isFastSpinning = true;
 
-    const startRot = cube.getAttribute('rotation') || { x: 0, y: 0, z: 0 };
+    const startRot = ball.getAttribute('rotation') || { x: 0, y: 0, z: 0 };
     const startTime = performance.now();
     const duration = 750;
     const totalSpin = 720;
@@ -229,7 +230,7 @@ function initInteractiveCubeController() {
       const progress = Math.min(elapsed / duration, 1);
       const easeOut = 1 - Math.pow(1 - progress, 3);
 
-      cube.setAttribute('rotation', {
+      ball.setAttribute('rotation', {
         x: startRot.x + easeOut * 360,
         y: startRot.y + easeOut * totalSpin,
         z: startRot.z + easeOut * 180

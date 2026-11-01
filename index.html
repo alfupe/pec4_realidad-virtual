@@ -17,12 +17,12 @@
     }
   </script>
 
-  <link rel="stylesheet" href="assets/css/styles.css?v=2.7">
+  <link rel="stylesheet" href="assets/css/styles.css?v=3.0">
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
-  <script src="assets/js/app.js?v=2.7" defer></script>
+  <script src="assets/js/app.js?v=3.0" defer></script>
 </head>
 <body>
 
@@ -37,6 +37,7 @@
 
     <a-assets timeout="10000">
       <a-asset-item id="scouterDbzModel" src="assets/models/scouter_dbz.glb"></a-asset-item>
+      <img id="dragonBallTex" src="assets/textures/dragon_ball_4star.png">
       <audio id="audioScan" src="assets/audio/scifi_scan.wav" preload="auto"></audio>
       <audio id="audioActivate" src="assets/audio/scifi_activate.wav" preload="auto"></audio>
       <audio id="audioTarget" src="assets/audio/scifi_target.wav" preload="auto"></audio>
@@ -45,18 +46,20 @@
     <a-camera active="false" position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse" raycaster="far: 10000; objects: .interactivo"></a-camera>
 
     <!-- Iluminación -->
-    <a-light type="ambient" intensity="0.9"></a-light>
-    <a-light type="directional" position="1 2 2" intensity="1.2"></a-light>
+    <a-light type="ambient" intensity="0.95"></a-light>
+    <a-light type="directional" position="1 2 2" intensity="1.25"></a-light>
 
-    <!-- Cubo reactivo -->
-    <a-entity
-      id="energyCube"
+    <!-- Bola de Dragón (4 estrellas) interactiva -->
+    <a-sphere
+      id="energyBall"
       class="interactivo"
-      geometry="primitive: box; width: 0.18; height: 0.18; depth: 0.18"
-      material="color: #3b82f6; roughness: 0.2; metalness: 0.8; emissive: #1d4ed8; emissiveIntensity: 0.5"
-      position="0.45 -0.15 -0.9"
+      radius="0.16"
+      segments-width="32"
+      segments-height="32"
+      material="src: #dragonBallTex; roughness: 0.12; metalness: 0.15; emissive: #ff6600; emissiveIntensity: 0.25"
+      position="0.45 -0.15 -2.2"
       rotation="15 30 0">
-    </a-entity>
+    </a-sphere>
 
     <!-- Anclaje facial (índice 168) -->
     <a-entity id="faceTarget" mindar-face-target="anchorIndex: 168" visible="false">
@@ -78,7 +81,8 @@
     <header class="hud__header">
       <div class="hud__card hud__card--info">
         <h1 class="hud__title">
-          <span>Scouter Táctico AR</span>
+          <span>Scouter Saiyan</span>
+          <span class="hud__badge-dbz" title="Esfera de 4 estrellas">4★</span>
           <button id="btnInfoModal" class="hud__info-btn" type="button" title="Instrucciones" aria-label="Instrucciones">ℹ️</button>
         </h1>
         <p class="hud__author">Alejandro Fuentes Pérez · UOC Realidad Virtual</p>
@@ -92,8 +96,8 @@
 
       <div class="hud__controls">
         <button id="btnPlaySound" class="hud__btn hud__btn--audio" type="button">
-          <span class="hud__btn-icon">🔊</span>
-          <span class="hud__btn-label">Sonido Aleatorio</span>
+          <span class="hud__btn-icon">⚡</span>
+          <span class="hud__btn-label">Sonidos DBZ</span>
         </button>
 
         <button id="btnToggleVisor" class="hud__btn hud__btn--visor" type="button" aria-pressed="false">
@@ -108,9 +112,9 @@
   <aside id="infoModal" class="hud-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <h2 id="modalTitle" class="hud-modal__title">Instrucciones de Uso</h2>
     <ul class="hud-modal__list">
-      <li class="hud-modal__item">Enfoca tu rostro hacia la cámara para activar el seguimiento facial del <strong>Scouter</strong>.</li>
-      <li class="hud-modal__item">Toca el <strong>cubo de energía</strong> para hacerlo girar a gran velocidad, cambiar de color y emitir sonido.</li>
-      <li class="hud-modal__item">Pulsa en <strong>Sonido Aleatorio</strong> (o haz clic en el Scouter) para reproducir efectos de rastreo.</li>
+      <li class="hud-modal__item">Enfoca tu rostro hacia la cámara para activar el seguimiento facial del <strong>Scouter Saiyan</strong>.</li>
+      <li class="hud-modal__item">Toca la <strong>Bola de Dragón (4 estrellas)</strong> en pantalla para hacerla girar rápidamente, emitir un destello de Ki y reproducir sonido.</li>
+      <li class="hud-modal__item">Pulsa en <strong>Sonidos DBZ</strong> (o haz clic en el Scouter) para reproducir efectos de rastreo de Ki, teletransporte o el radar dragón.</li>
       <li class="hud-modal__item">Usa el botón <strong>Ocultar/Mostrar Scouter</strong> para alternar la visualización del visor.</li>
     </ul>
 
