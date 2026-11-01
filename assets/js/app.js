@@ -10,8 +10,8 @@ let isVisorUserEnabled = true;
 let isAudioPlaying = false;
 let isFaceDetected = false;
 
-// Configuración de atributos de vídeo para móviles
-const videoObserver = new MutationObserver((mutations) => {
+// Configuración de atributos de vídeo y autoplay en iOS Safari para MindAR
+const videoObserver = new MutationObserver((mutations, observer) => {
   for (const mutation of mutations) {
     for (const node of mutation.addedNodes) {
       if (node.tagName === 'VIDEO') {
@@ -20,6 +20,8 @@ const videoObserver = new MutationObserver((mutations) => {
         node.setAttribute('playsinline', '');
         node.setAttribute('webkit-playsinline', '');
         node.play().catch(() => {});
+        observer.disconnect();
+        return;
       }
     }
   }
@@ -112,7 +114,7 @@ function initAudioController() {
 }
 
 // Animación y física de la Bola de Dragón interactiva (4 estrellas)
-function initInteractiveCubeController() {
+function initDragonBallController() {
   const ball = document.getElementById('energyBall') || document.getElementById('energyCube');
   if (!ball) return;
 
@@ -362,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.classList.add('is-android');
   }
   initAudioController();
-  initInteractiveCubeController();
+  initDragonBallController();
   initVisorController();
   initModalController();
   initSceneLifecycleController();

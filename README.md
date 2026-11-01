@@ -108,20 +108,22 @@ Siguiendo las directrices de la UOC sobre el uso de herramientas de Inteligencia
 Asistente de IA (Gemini / Antigravity).
 
 ### Objetivos perseguidos
-* **Búsqueda de recursos multimedia:** Localización en Sketchfab de modelos 3D alternativos con licencia Creative Commons (Scouter de Dragon Ball de Drawnah) y efectos de sonido Sci-Fi de dominio público.
+* **Búsqueda y generación de recursos multimedia:** Localización en Sketchfab del modelo 3D del Scouter de Drawnah (CC BY 4.0), generación procedural de la textura de 4 estrellas de la Bola de Dragón y síntesis de efectos de sonido retro-anime en formato WAV a 44.1 kHz.
 * **Generación de recursos gráficos:** Creación del código QR en formato PNG optimizado para el acceso directo a la versión desplegada en GitHub Pages desde el móvil.
 * **Configuración del entorno de desarrollo local:** Puesta en marcha de un servidor HTTPS local con certificados SSL autofirmados para permitir el acceso a la cámara mediante WebRTC en dispositivos móviles conectados a la red local y calibrar el visor en tiempo real.
-* **Cálculo matemático de la escena 3D:** Asistencia en la trigonometría del frustum de cámara y la compensación de aspect ratio (`object-fit: cover` de MindAR) para que el cubo 3D detecte y rebote en los cuatro bordes visibles de la pantalla, así como el ajuste del plano de corte cercano (`camera.near = 0.05`).
+* **Cálculo matemático 3D y compatibilidad móvil:** Asistencia en la trigonometría del frustum de cámara en Three.js y compensación de aspect ratio (`object-fit: cover` de MindAR) para el rebote continuo de la Bola de Dragón en los límites de pantalla, diagnóstico de políticas de autoplay en Safari iOS (`playsinline` con `MutationObserver`) y ajuste del plano de corte cercano (`camera.near = 0.05`).
 * **Documentación técnica:** Apoyo en la estructuración, normalización de créditos de autoría y redacción de este documento (`README.md`).
 
 ### Prompts representativos
 > «Ayúdame a buscar en Sketchfab un modelo 3D optimizado de un Scouter de Dragon Ball con licencia Creative Commons para sustituir las gafas actuales.»
 
+> «En Safari iOS el elemento video de la cámara de MindAR a veces no arranca por políticas de autoplay. ¿Cómo aseguramos playsinline y muted mediante un MutationObserver en cuanto se inyecte el nodo?»
+
 > «Genera un código QR que enlace a https://alfupe.github.io/pec4_realidad-virtual/ para integrarlo en la interfaz y en el README.»
 
 > «Monta un servidor local HTTPS rápido con Python y certificados SSL para probar la cámara y calibrar el visor directamente en mi móvil en red local.»
 
-> «¿Cómo calculamos los límites visibles del frustum en Three.js teniendo en cuenta que MindAR recorta horizontalmente el canvas en móviles para que un objeto rebote en los cuatro bordes de la pantalla?»
+> «¿Cómo calculamos los límites visibles del frustum en Three.js teniendo en cuenta que MindAR recorta horizontalmente el canvas en móviles para que la Bola de Dragón rebote exactamente en los cuatro bordes de la pantalla?»
 
 > «Estructura y redacta el README.md de la práctica de forma concisa y sin verborrea.»
 
