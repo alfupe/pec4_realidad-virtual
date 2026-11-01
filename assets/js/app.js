@@ -27,9 +27,14 @@ const videoObserver = new MutationObserver((mutations) => {
 videoObserver.observe(document.body, { childList: true });
 
 // Actualiza el texto de estado inferior
-function updateStatusTicker(text) {
+function updateStatusTicker(text, prefix = 'Estado:') {
+  const tickerPrefix = document.getElementById('tickerPrefix');
   const audioTrackName = document.getElementById('audioTrackName');
-  if (audioTrackName && !isAudioPlaying) {
+  if (isAudioPlaying) return;
+  if (tickerPrefix) {
+    tickerPrefix.textContent = prefix;
+  }
+  if (audioTrackName) {
     audioTrackName.textContent = text;
   }
 }
@@ -46,6 +51,7 @@ function initAudioController() {
 
   const btnPlaySound = document.getElementById('btnPlaySound');
   const audioTrackName = document.getElementById('audioTrackName');
+  const tickerPrefix = document.getElementById('tickerPrefix');
   const visorModel = document.getElementById('visorModel');
   let currentPlayingAudio = null;
   let lastAudioIndex = -1;
@@ -74,7 +80,8 @@ function initAudioController() {
 
     isAudioPlaying = true;
     btnPlaySound.classList.add('hud__btn--playing');
-    audioTrackName.textContent = track.name;
+    if (tickerPrefix) tickerPrefix.textContent = 'Audio:';
+    if (audioTrackName) audioTrackName.textContent = track.name;
 
     currentPlayingAudio.play().catch((err) => {
       console.warn('Reproducción de audio bloqueada:', err);

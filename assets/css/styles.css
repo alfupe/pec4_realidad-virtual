@@ -198,6 +198,12 @@ a-scene {
   transition: color var(--transition-fast), border-color var(--transition-fast);
 }
 
+.hud__ticker-prefix {
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-right: 3px;
+}
+
 .hud__ticker-track {
   color: var(--dbz-amber);
   font-weight: 600;
